@@ -4,9 +4,15 @@ PostInstall.txt
 README.rdoc
 Rakefile
 lib/bandsintown.rb
+lib/bandsintown/base.rb
+lib/bandsintown/connection.rb
+lib/bandsintown/event.rb
 script/console
 script/destroy
 script/generate
+spec/bandsintown/base_spec.rb
+spec/bandsintown/connection_spec.rb
+spec/bandsintown/event_spec.rb
 spec/bandsintown_spec.rb
 spec/spec.opts
 spec/spec_helper.rb

@@ -25,16 +25,20 @@ describe Bandsintown::Connection do
       @connection = Bandsintown::Connection.new(@base_url)
     end
     it "should convert args to url parameters" do
-      args        = { :artists => ["Little Brother", "Joe Scudda"], :location => "Boston, MA", :radius => 10 }
-      request_url = "http://api.bandsintown.com/api_path?artists%5B%5D=Little+Brother&artists%5B%5D=Joe+Scudda&location=Boston%2C+MA&radius=10"  
+      args         = { :artists => ["Little Brother", "Joe Scudda"], :location => "Boston, MA", :radius => 10 }
+      api_resource = "events/"
+      api_method   = "search"
+      request_url  = "http://api.bandsintown.com/events/search?artists%5B%5D=Little+Brother&artists%5B%5D=Joe+Scudda&format=json&location=Boston%2C+MA&radius=10"  
       Bandsintown::Connection.agent.should_receive(:get).with(request_url)
-      @connection.request("api_path", args)  
+      @connection.request(api_resource, api_method, args)  
     end
     it "should convert args[:start_date] and args[:end_date] to a single args[:date] parameter" do
-      args           = { :start_date => "2009-01-01", :end_date => "2009-02-01" }
-      request_url    = "http://api.bandsintown.com/api_path?date=2009-01-01%2C2009-02-01"
+      args         = { :start_date => "2009-01-01", :end_date => "2009-02-01" }
+      api_resource = "events/"
+      api_method   = "search"
+      request_url  = "http://api.bandsintown.com/events/search?date=2009-01-01%2C2009-02-01&format=json"
       Bandsintown::Connection.agent.should_receive(:get).with(request_url)
-      @connection.request("api_path", args)
+      @connection.request(api_resource, api_method, args)
     end
   end
   

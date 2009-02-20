@@ -3,7 +3,6 @@ $:.unshift(File.dirname(__FILE__)) unless
 
 require 'rubygems'
 require 'mechanize'
-require 'cgi'
 require 'activesupport'
 
 require 'bandsintown/base'

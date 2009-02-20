@@ -6,12 +6,12 @@ module Bandsintown
       attr_accessor :agent
     end
     
-    def initialize(base_url="http://api.bandsintown.com")
+    def initialize(base_url="http://localhost:3000/")
       @base_url = base_url
     end
     
-    def request(url_path, args = {})
-      request_url = @base_url + url_path + "?" + encode(args.symbolize_keys)
+    def request(resource_path, method_path, args = {})
+      request_url = @base_url + resource_path + method_path + "?" + encode(args.symbolize_keys)
       self.class.agent.get(request_url)
     end
     
@@ -28,6 +28,7 @@ module Bandsintown
         args[:date] = "#{args[:start_date]},#{args[:end_date]}"
         args.reject! { |k,v| k == :start_date || k == :end_date }
       end
+      args[:format] = "json"
       args.to_param
     end
     
