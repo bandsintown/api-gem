@@ -31,7 +31,7 @@ describe Bandsintown::Venue do
       @venue.bandsintown_url.should == @url
     end
     it "should set the bandsintown_id" do
-      @venue.bandsintown_id.should == @bandsintown_id
+      @venue.bandsintown_id.should == @id
     end
     it "should set the region" do
       @venue.region.should == @region

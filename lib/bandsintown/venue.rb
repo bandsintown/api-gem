@@ -6,7 +6,7 @@ module Bandsintown
     def initialize(args={})
       @name            = args["name"]
       @bandsintown_url = args["url"]
-      @bandsintown_id  = args["bandsintown_id"]
+      @bandsintown_id  = args["id"]
       @region          = args["region"]
       @city            = args["city"]
       @country         = args["country"]
