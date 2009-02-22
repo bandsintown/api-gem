@@ -9,10 +9,19 @@ describe Bandsintown::Event do
   end
   
   describe ".search(args = {})" do
+    @args = { :location => "Boston, MA", :date => "2009-01-01" }
     it "should request and parse a call to the BIT events search api method" do
-      args = { :date => "2009-01-01" }
-      Bandsintown::Event.should_receive(:request_and_parse).with("search", args)
-      Bandsintown::Event.search(args)
+      Bandsintown::Event.should_receive(:request_and_parse).with("search", @args).and_return([])
+      Bandsintown::Event.search(@args)
+    end
+    it "should return an Array of Bandsintown::Event objects built from the response" do
+      event_1 = mock(Bandsintown::Event)
+      event_2 = mock(Bandsintown::Event)
+      results = [ "event 1", "event 2" ]
+      Bandsintown::Event.stub!(:request_and_parse).and_return(results)
+      Bandsintown::Event.should_receive(:build_from_json).with("event 1").ordered.and_return(event_1)
+      Bandsintown::Event.should_receive(:build_from_json).with("event 2").ordered.and_return(event_2)
+      Bandsintown::Event.search(@args).should == [event_1, event_2]
     end
   end
   

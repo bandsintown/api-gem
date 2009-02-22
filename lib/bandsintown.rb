@@ -13,5 +13,9 @@ require 'bandsintown/event'
 require 'bandsintown/venue'
 
 module Bandsintown
+  class APIError < StandardError
+  end
   VERSION = '0.0.1'
 end
+
+

@@ -5,6 +5,9 @@ module Bandsintown
     
     def self.search(args={})
       results = self.request_and_parse("search", args)
+      events = []
+      results.each { |event| events << Bandsintown::Event.build_from_json(event) }
+      events
     end
     
     def self.resource_path()

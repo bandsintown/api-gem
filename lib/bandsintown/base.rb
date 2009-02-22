@@ -13,7 +13,15 @@ module Bandsintown
     end
     
     def self.parse(response)
-      
+      json = JSON.parse(response.body)
+      check_for_errors(json)
+      json
+    end
+    
+    def self.check_for_errors(json)
+      if json.is_a?(Hash) && json.has_key?("errors")
+        raise Bandsintown::APIError.new(json["errors"].join(", "))
+      end
     end
     
     def self.request_and_parse(api_method, args={})
