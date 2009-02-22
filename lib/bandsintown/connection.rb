@@ -12,7 +12,11 @@ module Bandsintown
     
     def request(resource_path, method_path, args = {})
       request_url = "#{@base_url}/#{resource_path}/#{method_path}?#{encode(args.symbolize_keys)}"
-      self.class.agent.get(request_url)
+      begin
+        self.class.agent.get(request_url)
+      rescue WWW::Mechanize::ResponseCodeError => error_response
+        error_response.page
+      end
     end
     
     def self.agent
