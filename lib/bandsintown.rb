@@ -4,6 +4,7 @@ $:.unshift(File.dirname(__FILE__)) unless
 require 'rubygems'
 require 'mechanize'
 require 'activesupport'
+require 'json'
 
 require 'bandsintown/base'
 require 'bandsintown/connection'
