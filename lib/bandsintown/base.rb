@@ -1,6 +1,8 @@
 module Bandsintown
   class Base
   
+    attr_accessor :bandsintown_url
+    
     def self.request(api_method, args={})
       self.connection.request(self.resource_path, api_method, args)
     end
