@@ -4,7 +4,7 @@ describe Bandsintown::Event do
   
   describe ".resource_path" do
     it "should return the relative path to Event requests" do
-      Bandsintown::Event.resource_path.should == "events/"
+      Bandsintown::Event.resource_path.should == "events"
     end
   end
   

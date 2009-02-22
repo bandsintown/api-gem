@@ -6,12 +6,12 @@ module Bandsintown
       attr_accessor :agent
     end
     
-    def initialize(base_url="http://localhost:3000/")
+    def initialize(base_url="http://localhost:3000")
       @base_url = base_url
     end
     
     def request(resource_path, method_path, args = {})
-      request_url = @base_url + resource_path + method_path + "?" + encode(args.symbolize_keys)
+      request_url = "#{@base_url}/#{resource_path}/#{method_path}?#{encode(args.symbolize_keys)}"
       self.class.agent.get(request_url)
     end
     

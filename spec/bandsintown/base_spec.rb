@@ -13,7 +13,7 @@ describe Bandsintown::Base do
   
   describe ".request(api_method, args={})" do
     it "should make a request to the connection url" do
-      resource_path = "events/"
+      resource_path = "events"
       method        = "search"
       args          = { :arg => "value" }
       Bandsintown::Base.stub!(:resource_path).and_return(resource_path)
@@ -29,7 +29,7 @@ describe Bandsintown::Base do
   
   describe ".request_and_parse(api_method, args={})" do
     before(:each) do
-      @resource_path = "events/"
+      @resource_path = "events"
       @method        = "search"
       @args          = { :arg => "value" }
       Bandsintown::Base.stub!(:resource_path).and_return(@resource_path)

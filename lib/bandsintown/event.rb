@@ -6,7 +6,7 @@ module Bandsintown
     end
     
     def self.resource_path()
-      "events/"
+      "events"
     end
     
   end
