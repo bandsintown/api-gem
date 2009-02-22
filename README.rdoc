@@ -8,7 +8,7 @@ FIX (describe your package)
 
 == FEATURES/PROBLEMS:
 
-* FIX (list of features or problems)
+* Need to convert :date parameter in requests to YYYY-MM-DD 
 
 == SYNOPSIS:
 

@@ -8,9 +8,11 @@ $hoe = Hoe.new('bandsintown', Bandsintown::VERSION) do |p|
   p.changes              = p.paragraphs_of("History.txt", 0..1).join("\n\n")
   p.post_install_message = 'PostInstall.txt' # TODO remove if post-install message not required
   p.rubyforge_name       = p.name # TODO this is default value
-  # p.extra_deps         = [
-  #   ['activesupport','>= 2.0.2'],
-  # ]
+  p.extra_deps         = [
+    ['activesupport','>= 2.0.2'],
+    ['json', '>= 1.1.3'],
+    ['mechanize', '>= 0.9.0']
+  ]
   p.extra_dev_deps = [
     ['newgem', ">= #{::Newgem::VERSION}"]
   ]

@@ -6,7 +6,7 @@ module Bandsintown
       attr_accessor :agent
     end
     
-    def initialize(base_url="http://localhost:3000")
+    def initialize(base_url)
       @base_url = base_url
     end
     
