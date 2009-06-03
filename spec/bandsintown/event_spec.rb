@@ -65,7 +65,8 @@ describe Bandsintown::Event do
         "datetime" => @datetime,
         "ticket_url" => @ticket_url,
         "artists" => [@artist_1, @artist_2],
-        "venue" => @venue_hash
+        "venue" => @venue_hash,
+        "status" => "new"
       }
       
       @built_event = Bandsintown::Event.build_from_json(@event_hash)
@@ -84,6 +85,9 @@ describe Bandsintown::Event do
     end
     it "should set the Event ticket url" do
       @built_event.ticket_url.should == @ticket_url
+    end
+    it "should set the Event status" do
+      @built_event.status.should == "new"
     end
     it "should set the Event's Venue" do
       built_venue = mock(Bandsintown::Venue)

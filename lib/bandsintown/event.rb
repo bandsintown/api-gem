@@ -1,7 +1,7 @@
 module Bandsintown
   class Event < Base
     
-    attr_accessor :bandsintown_id, :datetime, :ticket_url, :artists, :venue
+    attr_accessor :bandsintown_id, :datetime, :ticket_url, :artists, :venue, :status
     
     def self.search(args={})
       events = []
@@ -25,6 +25,7 @@ module Bandsintown
       event.bandsintown_url = json_hash["url"]
       event.datetime        = Time.parse(json_hash["datetime"])
       event.ticket_url      = json_hash["ticket_url"]
+      event.status          = json_hash["status"]
       event.venue           = Bandsintown::Venue.new(json_hash["venue"])
       event.artists         = []
       json_hash["artists"].each { |artist| event.artists << Bandsintown::Artist.new(artist) }
