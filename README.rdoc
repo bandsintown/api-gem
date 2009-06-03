@@ -1,26 +1,12 @@
 = bandsintown
 
-* FIX (url)
-
 == DESCRIPTION:
 
-FIX (describe your package)
+Bandsintown API gem
 
 == FEATURES/PROBLEMS:
 
 * Need to convert :date parameter in requests to YYYY-MM-DD 
-
-== SYNOPSIS:
-
-  FIX (code sample of usage)
-
-== REQUIREMENTS:
-
-* FIX (list of requirements)
-
-== INSTALL:
-
-* FIX (sudo gem install, anything else)
 
 == LICENSE:
 
