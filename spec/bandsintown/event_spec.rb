@@ -25,6 +25,19 @@ describe Bandsintown::Event do
     end
   end
   
+  describe ".daily" do
+    it "should request and parse a call to the BIT daily events api method" do
+      Bandsintown::Event.should_receive(:request_and_parse).with("daily").and_return([])
+      Bandsintown::Event.daily
+    end
+    it "should return an array of Bandsintown::Events built from the response" do
+      event = mock(Bandsintown::Event)
+      Bandsintown::Event.stub!(:request_and_parse).and_return(['event json'])
+      Bandsintown::Event.should_receive(:build_from_json).with('event json').and_return(event)
+      Bandsintown::Event.daily.should == [event]
+    end
+  end
+  
   describe ".build_from_json(json_hash)" do
     before(:each) do
       @event_id   = 745089

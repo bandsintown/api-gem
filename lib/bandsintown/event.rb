@@ -4,9 +4,14 @@ module Bandsintown
     attr_accessor :bandsintown_id, :datetime, :ticket_url, :artists, :venue
     
     def self.search(args={})
-      results = self.request_and_parse("search", args)
       events = []
-      results.each { |event| events << Bandsintown::Event.build_from_json(event) }
+      self.request_and_parse("search", args).each { |event| events << Bandsintown::Event.build_from_json(event) }
+      events
+    end
+    
+    def self.daily
+      events = []
+      self.request_and_parse("daily").each { |event| events << Bandsintown::Event.build_from_json(event) }
       events
     end
     
