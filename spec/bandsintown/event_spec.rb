@@ -25,6 +25,23 @@ describe Bandsintown::Event do
     end
   end
   
+  describe ".recommended(args = {})" do
+    @args = { :location => "Boston, MA", :date => "2009-01-01" }
+    it "should request and parse a call to the BIT recommended events api method" do
+      Bandsintown::Event.should_receive(:request_and_parse).with("recommended", @args).and_return([])
+      Bandsintown::Event.recommended(@args)
+    end
+    it "should return an Array of Bandsintown::Event objects built from the response" do
+      event_1 = mock(Bandsintown::Event)
+      event_2 = mock(Bandsintown::Event)
+      results = [ "event 1", "event 2" ]
+      Bandsintown::Event.stub!(:request_and_parse).and_return(results)
+      Bandsintown::Event.should_receive(:build_from_json).with("event 1").ordered.and_return(event_1)
+      Bandsintown::Event.should_receive(:build_from_json).with("event 2").ordered.and_return(event_2)
+      Bandsintown::Event.recommended(@args).should == [event_1, event_2]
+    end
+  end
+  
   describe ".daily" do
     it "should request and parse a call to the BIT daily events api method" do
       Bandsintown::Event.should_receive(:request_and_parse).with("daily").and_return([])
@@ -98,8 +115,8 @@ describe Bandsintown::Event do
     it "should set the Event's Artists" do
       built_artist_1 = mock(Bandsintown::Artist, :name => "Little Brother")
       built_artist_2 = mock(Bandsintown::Artist, :name => "Joe Scudda")
-      Bandsintown::Artist.should_receive(:new).with(@artist_1).and_return(built_artist_1)
-      Bandsintown::Artist.should_receive(:new).with(@artist_2).and_return(built_artist_2)
+      Bandsintown::Artist.should_receive(:new).with(@artist_1["name"], @artist_1["url"]).and_return(built_artist_1)
+      Bandsintown::Artist.should_receive(:new).with(@artist_2["name"], @artist_2["url"]).and_return(built_artist_2)
       @built_event = Bandsintown::Event.build_from_json(@event_hash)
       @built_event.artists.should == [built_artist_1, built_artist_2]
     end

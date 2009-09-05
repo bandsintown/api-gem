@@ -1,11 +1,40 @@
 module Bandsintown
   class Artist < Base
     
-    attr_accessor :name
+    attr_accessor :name, :events
         
-    def initialize(args = {})
-      @name = args["name"]
-      @bandsintown_url = args["url"]
+    def initialize(name, url = nil)
+      @name = name
+      @bandsintown_url = url || build_bandsintown_url
+    end
+    
+    def events
+      return @events unless @events.blank?
+      @events = self.class.request_and_parse("#{api_name}/events").map { |event| Bandsintown::Event.build_from_json(event) }
+    end
+    
+    # CGI escaped name used in api requests. / and ? must be double escaped.
+    def api_name
+      name = @name.dup
+      name.gsub!('/', CGI.escape('/'))
+      name.gsub!('?', CGI.escape('?'))
+      URI.escape(name)
+    end
+    
+    def self.resource_path
+      "artists"
+    end
+    
+    private
+    
+    def build_bandsintown_url
+      name = @name.dup
+      name.gsub!('&', 'And')
+      name.gsub!('+', 'Plus')
+      name = name.split.map { |w| w.capitalize }.join if name =~ /\s/
+      name.gsub!('/', CGI.escape('/'))
+      name.gsub!('?', CGI.escape('?'))
+      "http://www.bandsintown.com/#{name}"
     end
     
   end

@@ -4,10 +4,6 @@
 
 Bandsintown API gem
 
-== FEATURES/PROBLEMS:
-
-* Need to convert :date parameter in requests to YYYY-MM-DD 
-
 == LICENSE:
 
 (The MIT License)

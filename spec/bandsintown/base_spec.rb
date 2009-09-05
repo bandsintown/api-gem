@@ -24,14 +24,14 @@ describe Bandsintown::Base do
   
   describe ".parse(response)" do
     it "should check the response for errors" do
-      response = mock("HTTP get response", :body => "")
+      response = "response"
       parsed   = mock("parsed json")
       JSON.stub!(:parse).and_return(parsed)
       Bandsintown::Base.should_receive(:check_for_errors).with(parsed)
       Bandsintown::Base.parse(response)
     end
     it "should convert the response from JSON format and return it" do
-      response = mock("HTTP get response", :body => "{\"ok\": 123}")
+      response = "{\"ok\": 123}\n"
       Bandsintown::Base.parse(response).should == { "ok" => 123 }
     end
   end

@@ -1,3 +1,9 @@
+== 0.0.3 2009-09-05
+* Full Bandsintown API support
+* Added Artists - Events API method
+* Added Events - Recommended API method
+* Updated Bandsintown::Connection class
+
 == 0.0.2 2009-06-03
 * Added the daily events API method
 

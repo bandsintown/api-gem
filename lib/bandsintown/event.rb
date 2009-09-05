@@ -15,7 +15,13 @@ module Bandsintown
       events
     end
     
-    def self.resource_path()
+    def self.recommended(args = {})
+      events = []
+      self.request_and_parse("recommended", args).each { |event| events << Bandsintown::Event.build_from_json(event) }
+      events
+    end
+    
+    def self.resource_path
       "events"
     end
     
@@ -28,7 +34,7 @@ module Bandsintown
       event.status          = json_hash["status"]
       event.venue           = Bandsintown::Venue.new(json_hash["venue"])
       event.artists         = []
-      json_hash["artists"].each { |artist| event.artists << Bandsintown::Artist.new(artist) }
+      json_hash["artists"].each { |artist| event.artists << Bandsintown::Artist.new(artist["name"], artist["url"]) }
       event
     end
     

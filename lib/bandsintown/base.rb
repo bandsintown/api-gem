@@ -8,11 +8,11 @@ module Bandsintown
     end
   
     def self.connection()
-      @connection ||= Bandsintown::Connection.new("http://api.bandsintown.com/")
+      @connection ||= Bandsintown::Connection.new("http://api.bandsintown.com")
     end
     
     def self.parse(response)
-      json = JSON.parse(response.body)
+      json = JSON.parse(response)
       check_for_errors(json)
       json
     end

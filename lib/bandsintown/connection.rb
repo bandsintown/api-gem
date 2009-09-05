@@ -2,10 +2,6 @@ module Bandsintown
   class Connection
     attr_accessor :base_url
     
-    class << self
-      attr_accessor :agent
-    end
-    
     def initialize(base_url)
       @base_url = base_url
     end
@@ -13,24 +9,23 @@ module Bandsintown
     def request(resource_path, method_path, args = {})
       request_url = "#{@base_url}/#{resource_path}/#{method_path}?#{encode(args.symbolize_keys)}"
       begin
-        self.class.agent.get(request_url)
-      rescue WWW::Mechanize::ResponseCodeError => error_response
-        error_response.page
+        open(request_url).read
+      rescue OpenURI::HTTPError => error_response
+        error_response.io.read
       end
     end
     
-    def self.agent
-      return @agent unless @agent.nil?
-      @agent = WWW::Mechanize.new()
-      @agent.max_history = 1 # default is no limit, not so good...
-      @agent
-    end
-    
     private 
+    
     def encode(args = {})
-      if args.has_key?(:end_date) && args.has_key?(:start_date)
-        args[:date] = "#{args[:start_date]},#{args[:end_date]}"
-        args.reject! { |k,v| k == :start_date || k == :end_date }
+      start_date = args.delete(:start_date)
+      end_date   = args.delete(:end_date)
+      if start_date && end_date
+        start_date  = start_date.strftime("%Y-%m-%d") unless start_date.is_a?(String)
+        end_date    = end_date.strftime("%Y-%m-%d")   unless end_date.is_a?(String)
+        args[:date] = "#{start_date},#{end_date}"
+      elsif args.has_key?(:date)
+        args[:date] = args[:date].strftime("%Y-%m-%d") unless args[:date].is_a?(String)
       end
       args[:format] = "json"
       args.to_param
