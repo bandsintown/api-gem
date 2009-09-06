@@ -83,7 +83,9 @@ describe Bandsintown::Event do
         "ticket_url" => @ticket_url,
         "artists" => [@artist_1, @artist_2],
         "venue" => @venue_hash,
-        "status" => "new"
+        "status" => "new",
+        "ticket_status" => "available",
+        "on_sale_datetime" => "2008-09-01T19:30:00"
       }
       
       @built_event = Bandsintown::Event.build_from_json(@event_hash)
@@ -106,6 +108,16 @@ describe Bandsintown::Event do
     it "should set the Event status" do
       @built_event.status.should == "new"
     end
+    it "should set the Event ticket_status" do
+      @built_event.ticket_status.should == "available"
+    end
+    it "should set the Event on_sale_datetime" do
+      @built_event.on_sale_datetime.should == Time.parse(@event_hash['on_sale_datetime'])
+    end
+    it "should set the Event on_sale_datetime to nil if not given" do
+      @event_hash['on_sale_datetime'] = nil
+      Bandsintown::Event.build_from_json(@event_hash).on_sale_datetime.should be_nil
+    end
     it "should set the Event's Venue" do
       built_venue = mock(Bandsintown::Venue)
       Bandsintown::Venue.should_receive(:new).with(@venue_hash).and_return(built_venue)
@@ -119,6 +131,19 @@ describe Bandsintown::Event do
       Bandsintown::Artist.should_receive(:new).with(@artist_2["name"], @artist_2["url"]).and_return(built_artist_2)
       @built_event = Bandsintown::Event.build_from_json(@event_hash)
       @built_event.artists.should == [built_artist_1, built_artist_2]
+    end
+  end
+  
+  describe "#tickets_available?" do
+    it "should return true if @ticket_status is 'available'" do
+      event = Bandsintown::Event.new
+      event.ticket_status = 'available'
+      event.tickets_available?.should be_true
+    end
+    it "should return false if @ticket_status is not 'available'" do
+      event = Bandsintown::Event.new
+      event.ticket_status = 'unavailable'
+      event.tickets_available?.should be_false
     end
   end
 end

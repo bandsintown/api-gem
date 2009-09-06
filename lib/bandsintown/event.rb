@@ -1,7 +1,11 @@
 module Bandsintown
   class Event < Base
     
-    attr_accessor :bandsintown_id, :datetime, :ticket_url, :artists, :venue, :status
+    attr_accessor :bandsintown_id, :datetime, :ticket_url, :artists, :venue, :status, :ticket_status, :on_sale_datetime
+    
+    def tickets_available?
+      ticket_status == "available"
+    end
     
     #Returns an array of Bandsintown::Event objects matching the options passed.
     #See http://www.bandsintown.com/api/requests#events-search for more information.
@@ -80,14 +84,16 @@ module Bandsintown
     end
     
     def self.build_from_json(json_hash)
-      event                 = Bandsintown::Event.new()
-      event.bandsintown_id  = json_hash["id"]
-      event.bandsintown_url = json_hash["url"]
-      event.datetime        = Time.parse(json_hash["datetime"])
-      event.ticket_url      = json_hash["ticket_url"]
-      event.status          = json_hash["status"]
-      event.venue           = Bandsintown::Venue.new(json_hash["venue"])
-      event.artists         = []
+      event                  = Bandsintown::Event.new()
+      event.bandsintown_id   = json_hash["id"]
+      event.bandsintown_url  = json_hash["url"]
+      event.datetime         = Time.parse(json_hash["datetime"])
+      event.ticket_url       = json_hash["ticket_url"]
+      event.status           = json_hash["status"]
+      event.ticket_status    = json_hash["ticket_status"]
+      event.on_sale_datetime = Time.parse(json_hash["on_sale_datetime"]) rescue nil
+      event.venue            = Bandsintown::Venue.new(json_hash["venue"])
+      event.artists          = []
       json_hash["artists"].each { |artist| event.artists << Bandsintown::Artist.new(artist["name"], artist["url"]) }
       event
     end
