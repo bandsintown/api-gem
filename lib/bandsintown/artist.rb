@@ -2,18 +2,26 @@ module Bandsintown
   class Artist < Base
     
     attr_accessor :name, :events
-        
+    
     def initialize(name, url = nil)
       @name = name
       @bandsintown_url = url || build_bandsintown_url
     end
     
+    #Returns an array of Bandsintown::Event objects for each of the artist's upcoming events available through bandsintown.com.
+    #See http://www.bandsintown.com/api/requests#artists-events for more information.
+    #
+    #====example:
+    #   artist = Bandsintown::Artist.new("Little Brother")
+    #   upcoming_little_brother_events = artist.events
+    #
     def events
       return @events unless @events.blank?
       @events = self.class.request_and_parse("#{api_name}/events").map { |event| Bandsintown::Event.build_from_json(event) }
     end
     
-    # CGI escaped name used in api requests. / and ? must be double escaped.
+    # name used in api requests. / and ? must be double escaped.
+    #
     def api_name
       name = @name.dup
       name.gsub!('/', CGI.escape('/'))

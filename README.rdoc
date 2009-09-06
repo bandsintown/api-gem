@@ -4,11 +4,38 @@
 
 Bandsintown API gem
 
+A Ruby library for accessing the Bandsintown API.
+
+The Bandsintown API lets any developer access the largest database of upcoming concert listings and concert tickets in the world.
+
+For more information visit http://www.bandsintown.com/api/affiliate_program.
+
+== USAGE:
+
+After signing up for the affiliate program and receiving your app_id (see http://www.bandsintown.com/api/authentication for details), using the Bandsintown API with this gem is as simple as the following examples:
+
+	# set the app_id parameter for all requests
+	Bandsintown.app_id = 'YOUR_APP_ID'
+
+	# search for an artist's events (http://www.bandsintown.com/api/requests#artists-events)
+	artist = Bandsintown::Artist.new("The Killers")
+	events = artist.events
+
+	# search for events using a location (or artists) (http://www.bandsintown.com/api/requests#events-search)
+	events = Bandsintown::Event.search(:location => 'Boston, MA', :start_date => Time.now, :end_date => 1.week.from_now)
+	events = Bandsintown::Event.search(:artists => ['Mos Def', 'Talib Kweli'], :start_date => Time.now, :end_date => 1.week.from_now)
+
+	# search for recommended events using a location and artists (http://www.bandsintown.com/api/requests#artists-events)
+	events = Bandsintown::Event.recommended(:artists => ['Led Zeppelin'], :location => 'Boston, MA')
+
+	# check out the latest events added to the Bandsintown API, updated daily:
+	todays_events = Bandsintown::Event.daily
+
 == LICENSE:
 
 (The MIT License)
 
-Copyright (c) 2009 FIXME full name
+Copyright (c) 2009 Mike Costanza
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the

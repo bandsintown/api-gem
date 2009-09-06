@@ -3,8 +3,8 @@ $:.unshift(File.dirname(__FILE__)) unless
 
 require 'rubygems'
 require 'open-uri'
-require 'activesupport'
 require 'cgi'
+require 'activesupport'
 require 'json'
 
 require 'bandsintown/base'
@@ -14,9 +14,14 @@ require 'bandsintown/event'
 require 'bandsintown/venue'
 
 module Bandsintown
-  class APIError < StandardError
-  end
   VERSION = '0.0.2'
+  class APIError < StandardError; end
+  class << self
+    # All Bandsintown API requests require an app_id parameter for identification.
+    # See http://www.bandsintown.com/api/authentication for more information.
+    #
+    attr_accessor :app_id
+  end
 end
 
 

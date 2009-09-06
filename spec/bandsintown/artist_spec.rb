@@ -17,7 +17,7 @@ describe Bandsintown::Artist do
     end
     
     describe "generating a url (initialize with nil url)" do
-        it "should strip spaces" do
+      it "should strip spaces" do
         name = "The Beatles "
         Bandsintown::Artist.new(name).bandsintown_url.should == "http://www.bandsintown.com/TheBeatles"
       end
@@ -92,6 +92,11 @@ describe Bandsintown::Artist do
       Bandsintown::Event.should_receive(:build_from_json).with("event 1").ordered.and_return(event_1)
       Bandsintown::Event.should_receive(:build_from_json).with("event 2").ordered.and_return(event_2)
       @artist.events.should == [event_1, event_2]
+    end
+    it "should be cached" do
+      @artist.events = 'events'
+      Bandsintown::Artist.should_not_receive(:request_and_parse)
+      @artist.events.should == 'events'
     end
   end
   

@@ -3,21 +3,75 @@ module Bandsintown
     
     attr_accessor :bandsintown_id, :datetime, :ticket_url, :artists, :venue, :status
     
-    def self.search(args={})
+    #Returns an array of Bandsintown::Event objects matching the options passed.
+    #See http://www.bandsintown.com/api/requests#events-search for more information.
+    #====options:
+    # :artists - an array of artist names or music brainz id's (formatted as 'mbid_<id>').
+    # :location - a string with one of the following formats:
+    #   * 'city, state' for United States and Canada
+    #   * 'city, country' for other countries
+    #   * 'latitude,longitude'
+    #   * ip address - will use the location of the passed ip address
+    #   * 'use_geoip' - will use the location of the ip address that made the request
+    # :radius - a number in miles. API default is 25, maximum is 150.
+    # :date - use one of the following formats:
+    #   * 'upcoming' - all upcoming dates, this is the API default.
+    #   * single date
+    #     * String formatted 'yyyy-mm-dd'
+    #     * Time/Date/DateTime object (anything that responds to strftime)
+    #   * date range
+    #     * String formatted 'yyyy-mm-dd,yyyy-mm-dd'
+    #     * alternatively use :start_date and :end_date with 'yyyy-mm-dd' Strings or Time/Date/DateTime objects.
+    # :per_page - number of results per response.  API default is 50, maximum is 100.
+    # :page - offset for paginated results.  API default is 1.
+    #
+    #====notes:
+    #:location or :artists is required for this request, all other arguments are optional.
+    #
+    #====examples:
+    #All concerts (first page w/ 50 results) in New York City for The Roots or Slum Village within the next 30 days (using Date objects):
+    #   Bandsintown::Event.search(:location => "New York, NY", :artists => ["The Roots", "Slum Village"], :start_date => Date.today, :end_date => Date.today + 30)
+    #
+    #All concerts (first page w/ 50 results) on Dec 31 2009 (using formatted date string) within 100 miles of London:
+    #   Bandsintown::Event.search(:location => "London, UK", :radius => 100, :date => "2009-12-31")
+    # 
+    #Second page of all concerts near the request's ip address within in the next month, using Time objects and 100 results per page:
+    #   Bandsintown::Event.search(:start_date => Time.now, :end_date => 1.month.from_now, :per_page => 100, :page => 2, :location => "use_geoip")
+    #
+    def self.search(options = {})
       events = []
-      self.request_and_parse("search", args).each { |event| events << Bandsintown::Event.build_from_json(event) }
+      self.request_and_parse("search", options).each { |event| events << Bandsintown::Event.build_from_json(event) }
       events
     end
     
+    #Returns an array of Bandsintown::Event objects for all events added to Bandsintown within the last day (updated at 12:00 PM EST daily).
+    #See http://www.bandsintown.com/api/requests#events-daily for more information.
+    #
     def self.daily
       events = []
       self.request_and_parse("daily").each { |event| events << Bandsintown::Event.build_from_json(event) }
       events
     end
     
-    def self.recommended(args = {})
+    #Returns an array of Bandsintown::Event objects matching the options passed.
+    #See http://www.bandsintown.com/api/requests#events-recommended for more information.
+    #====options:
+    #All options are the same as Bandsintown::Event.search with the following extra option:
+    # :only_recs - boolean for whether to include events with the artists from the :artists option. default is false.
+    #
+    #====notes:
+    #:location and :artists are required for this request, all other arguments are optional.
+    #
+    #====examples:
+    #All concerts (first page w/ 50 results) in Boston, MA recommended for fans of Metallica, including Metallica concerts
+    #   Bandsintown::Event.recommended(:location => "Boston, MA", :artists => ["Metallica"])
+    #
+    #All concerts (first page w/ 50 results) on Dec 31 2009 within 100 miles of London recommended for fans of Usher and Lil Wayne, excluding Usher and Lil Wayne concerts
+    #   Bandsintown::Event.recommended(:location => "London, UK", :radius => 100, :date => "2009-12-31", :artists => ["Usher", "Lil Wayne"], :only_recs => true)
+    #
+    def self.recommended(options = {})
       events = []
-      self.request_and_parse("recommended", args).each { |event| events << Bandsintown::Event.build_from_json(event) }
+      self.request_and_parse("recommended", options).each { |event| events << Bandsintown::Event.build_from_json(event) }
       events
     end
     

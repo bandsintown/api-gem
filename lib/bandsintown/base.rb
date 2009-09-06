@@ -7,7 +7,7 @@ module Bandsintown
       self.connection.request(self.resource_path, api_method, args)
     end
   
-    def self.connection()
+    def self.connection
       @connection ||= Bandsintown::Connection.new("http://api.bandsintown.com")
     end
     

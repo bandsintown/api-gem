@@ -28,6 +28,7 @@ module Bandsintown
         args[:date] = args[:date].strftime("%Y-%m-%d") unless args[:date].is_a?(String)
       end
       args[:format] = "json"
+      args[:app_id] = Bandsintown.app_id
       args.to_param
     end
     
