@@ -19,4 +19,3 @@ spec/bandsintown/venue_spec.rb
 spec/bandsintown_spec.rb
 spec/spec.opts
 spec/spec_helper.rb
-tasks/rspec.rake
