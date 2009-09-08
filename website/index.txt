@@ -1,0 +1,83 @@
+h1. bandsintown
+
+h2. Description
+
+Bandsintown.com API gem
+
+A Ruby library for accessing the Bandsintown API.
+
+The Bandsintown API lets any developer access the largest database of upcoming concert listings and concert tickets in the world.
+
+For more information see "Bandsintown.com API Documentation":http://www.bandsintown.com/api/requests.
+
+h2. Installing
+
+<pre>sudo gem install bandsintown</pre>
+
+h2. Usage
+
+h3. Requiring
+
+<pre syntax="ruby">require 'bandsintown'</pre>
+
+h3. Setting the bandsintown app_id parameter
+
+<pre syntax="ruby">
+Bandsintown.app_id = 'YOUR_APP_ID'
+</pre>
+
+h3. Find all upcoming events for a given artist 
+
+<pre syntax="ruby">
+artist = Bandsintown::Artist.new('The Killers')
+events = artist.events
+</pre>
+
+h3. Find events this week around Boston, MA
+
+<pre syntax="ruby">
+events = Bandsintown::Event.search({
+  :location => 'Boston, MA', 
+  :start_date => Time.now,
+  :end_date => 1.week.from_now
+})
+</pre>
+
+h3. Find events this week for Mos Def and Talib Kweli
+
+<pre syntax="ruby">
+events = Bandsintown::Event.search({
+  :artists => ['Mos Def', 'Talib Kweli'],
+  :start_date => Time.now,
+  :end_date => 1.week.from_now
+})
+</pre>
+
+h3. Find recommended events around Boston, MA for fans of Led Zeppelin
+
+<pre syntax="ruby">
+events = Bandsintown::Event.recommended({
+  :artists => ['Led Zeppelin'],
+  :location => 'Boston, MA'
+})
+</pre>
+
+h3. Find events added/updated/deleted within the last day
+
+<pre syntax="ruby">
+events = Bandsintown::Event.daily
+</pre>
+
+h2. Source
+
+<pre>git clone git://github.com/bandsintown/bandsintown.git</pre>
+
+h2. Links
+
+* "RDoc":http://bandsintown.rubyforge.org/rdoc
+* "Bandsintown.com API Documentation":http://www.bandsintown.com/api/requests
+* "Github":http://github.com/bandsintown/bandsintown
+
+h2. License
+
+This code is free to use under the terms of the MIT license. 
