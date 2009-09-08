@@ -1,3 +1,5 @@
+require 'test/unit'
+
 begin
   require 'spec'
 rescue LoadError
