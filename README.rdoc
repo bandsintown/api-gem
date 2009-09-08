@@ -8,11 +8,11 @@ A Ruby library for accessing the Bandsintown API.
 
 The Bandsintown API lets any developer access the largest database of upcoming concert listings and concert tickets in the world.
 
-For more information visit http://www.bandsintown.com/api/affiliate_program.
+For more information visit http://www.bandsintown.com/api/requests.
 
 == USAGE:
 
-After signing up for the affiliate program and receiving your app_id (see http://www.bandsintown.com/api/authentication for details), using the Bandsintown API with this gem is as simple as the following examples:
+Using the Bandsintown API with this gem is as simple as the following examples:
 
 	# set the app_id parameter for all requests
 	Bandsintown.app_id = 'YOUR_APP_ID'
