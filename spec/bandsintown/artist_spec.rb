@@ -37,9 +37,9 @@ describe Bandsintown::Artist do
         name = "$up"
         Bandsintown::Artist.new(name).bandsintown_url.should == "http://www.bandsintown.com/$up"
       end
-      it "should not cgi escape accented characters" do
+      it "should uri escape accented characters" do
         name = "sigur rós"
-        Bandsintown::Artist.new(name).bandsintown_url.should == "http://www.bandsintown.com/SigurRós"
+        Bandsintown::Artist.new(name).bandsintown_url.should == "http://www.bandsintown.com/SigurR%C3%B3s"
       end
       it "should not alter the case of single word names" do
         name = "AWOL"
@@ -60,11 +60,13 @@ describe Bandsintown::Artist do
       end
       it "should cgi escape '/' so it will be double encoded" do
         name = "AC/DC"
-        Bandsintown::Artist.new(name).bandsintown_url.should == "http://www.bandsintown.com/AC#{CGI.escape('/')}DC"
+        escaped_name = URI.escape(name.gsub('/', CGI.escape('/')))
+        Bandsintown::Artist.new(name).bandsintown_url.should == "http://www.bandsintown.com/#{escaped_name}"
       end
       it "should cgi escape '?' so it will be double encoded" do
         name = "Does it offend you, yeah?"
-        Bandsintown::Artist.new(name).bandsintown_url.should == "http://www.bandsintown.com/DoesItOffendYou,Yeah#{CGI.escape('?')}"
+        escaped_name = URI.escape("DoesItOffendYou,Yeah#{CGI.escape('?')}")
+        Bandsintown::Artist.new(name).bandsintown_url.should == "http://www.bandsintown.com/#{escaped_name}"
       end
     end
   end

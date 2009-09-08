@@ -42,7 +42,7 @@ module Bandsintown
       name = name.split.map { |w| w.capitalize }.join if name =~ /\s/
       name.gsub!('/', CGI.escape('/'))
       name.gsub!('?', CGI.escape('?'))
-      "http://www.bandsintown.com/#{name}"
+      "http://www.bandsintown.com/#{URI.escape(name)}"
     end
     
   end
