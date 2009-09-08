@@ -11,6 +11,7 @@ lib/bandsintown/venue.rb
 script/console
 script/destroy
 script/generate
+script/txt2html
 spec/bandsintown/artist_spec.rb
 spec/bandsintown/base_spec.rb
 spec/bandsintown/connection_spec.rb
@@ -19,3 +20,8 @@ spec/bandsintown/venue_spec.rb
 spec/bandsintown_spec.rb
 spec/spec.opts
 spec/spec_helper.rb
+website/index.html
+website/index.txt
+website/javascripts/rounded_corners_lite.inc.js
+website/stylesheets/screen.css
+website/template.html.erb

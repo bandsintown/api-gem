@@ -1,8 +1,8 @@
 = bandsintown
 
-== DESCRIPTION:
+== Description
 
-Bandsintown API gem
+Bandsintown.com API gem
 
 A Ruby library for accessing the Bandsintown API.
 
@@ -10,26 +10,57 @@ The Bandsintown API lets any developer access the largest database of upcoming c
 
 For more information visit http://www.bandsintown.com/api/requests.
 
-== USAGE:
+== Installing
 
-Using the Bandsintown API with this gem is as simple as the following examples:
+  sudo gem install bandsintown
 
-	# set the app_id parameter for all requests
-	Bandsintown.app_id = 'YOUR_APP_ID'
+== Usage
 
-	# search for an artist's events (http://www.bandsintown.com/api/requests#artists-events)
-	artist = Bandsintown::Artist.new("The Killers")
-	events = artist.events
+=== Requiring
 
-	# search for events using a location (or artists) (http://www.bandsintown.com/api/requests#events-search)
-	events = Bandsintown::Event.search(:location => 'Boston, MA', :start_date => Time.now, :end_date => 1.week.from_now)
-	events = Bandsintown::Event.search(:artists => ['Mos Def', 'Talib Kweli'], :start_date => Time.now, :end_date => 1.week.from_now)
+  require 'bandsintown'
 
-	# search for recommended events using a location and artists (http://www.bandsintown.com/api/requests#artists-events)
-	events = Bandsintown::Event.recommended(:artists => ['Led Zeppelin'], :location => 'Boston, MA')
+=== Setting the bandsintown app_id parameter
 
-	# check out the latest events added to the Bandsintown API, updated daily:
-	todays_events = Bandsintown::Event.daily
+  Bandsintown.app_id = 'YOUR_APP_ID'
+
+=== Find all upcoming events for a given artist
+
+  artist = Bandsintown::Artist.new("The Killers")
+  events = artist.events
+
+=== Find events this week around Boston, MA 
+
+  events = Bandsintown::Event.search({
+    :location => 'Boston, MA', 
+    :start_date => Time.now,
+    :end_date => 1.week.from_now
+  })
+
+=== Find events this week for Mos Def and Talib Kweli
+
+  events = Bandsintown::Event.search({
+    :artists => ['Mos Def', 'Talib Kweli'], 
+    :start_date => Time.now, 
+    :end_date => 1.week.from_now
+  })
+
+=== Find recommended events around Boston, MA for fans of Led Zeppelin
+
+  events = Bandsintown::Event.recommended({
+    :artists => ['Led Zeppelin'], 
+    :location => 'Boston, MA'
+  })
+
+=== find events added/updated/deleted within the last day
+
+  events = Bandsintown::Event.daily
+
+== Links
+
+* RDoc[http://bandsintown.rubyforge.org/rdoc]
+* {Bandsintown.com API Documentation}[http://www.bandsintown.com/api/requests]
+* Github[http://github.com/bandsintown/bandsintown]
 
 == LICENSE:
 
