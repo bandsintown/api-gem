@@ -34,7 +34,7 @@
     <div class="sidebar">
       <div id="version" class="clickable" onclick='document.location = "http://rubyforge.org/projects/bandsintown"; return false'>
         <p>Get Version</p>
-        <a href="http://rubyforge.org/projects/bandsintown" class="numbers">0.1.1</a>
+        <a href="http://rubyforge.org/projects/bandsintown" class="numbers">0.1.2</a>
       </div>
     </div>
     <h2>Description</h2>
@@ -53,7 +53,17 @@
 </pre></p>
 <h3>Find all upcoming events for a given artist</h3>
 <p><pre class='syntax'>
-<span class="ident">artist</span> <span class="punct">=</span> <span class="constant">Bandsintown</span><span class="punct">::</span><span class="constant">Artist</span><span class="punct">.</span><span class="ident">new</span><span class="punct">('</span><span class="string">The Killers</span><span class="punct">')</span>
+<span class="ident">artist</span> <span class="punct">=</span> <span class="constant">Bandsintown</span><span class="punct">::</span><span class="constant">Artist</span><span class="punct">.</span><span class="ident">new</span><span class="punct">({</span>
+  <span class="symbol">:name</span> <span class="punct">=&gt;</span> <span class="punct">'</span><span class="string">The Killers</span><span class="punct">'</span>
+<span class="punct">})</span>
+<span class="ident">events</span> <span class="punct">=</span> <span class="ident">artist</span><span class="punct">.</span><span class="ident">events</span>
+</pre></p>
+<h3>Find all upcoming events for a given artist using mbid (music brainz id)</h3>
+<p><pre class='syntax'>
+<span class="comment"># 486af4f0-a79b-468f-be73-527cd4caf6ea =&gt; mbid for Slick Rick</span>
+<span class="ident">artist</span> <span class="punct">=</span> <span class="constant">Bandsintown</span><span class="punct">::</span><span class="constant">Artist</span><span class="punct">.</span><span class="ident">new</span><span class="punct">({</span> 
+  <span class="symbol">:mbid</span> <span class="punct">=&gt;</span> <span class="punct">&quot;</span><span class="string">486af4f0-a79b-468f-be73-527cd4caf6ea</span><span class="punct">&quot;</span>
+<span class="punct">})</span>
 <span class="ident">events</span> <span class="punct">=</span> <span class="ident">artist</span><span class="punct">.</span><span class="ident">events</span>
 </pre></p>
 <h3>Find events this week around Boston, MA</h3>
@@ -70,6 +80,19 @@
   <span class="symbol">:artists</span> <span class="punct">=&gt;</span> <span class="punct">['</span><span class="string">Mos Def</span><span class="punct">',</span> <span class="punct">'</span><span class="string">Talib Kweli</span><span class="punct">'],</span>
   <span class="symbol">:start_date</span> <span class="punct">=&gt;</span> <span class="constant">Time</span><span class="punct">.</span><span class="ident">now</span><span class="punct">,</span>
   <span class="symbol">:end_date</span> <span class="punct">=&gt;</span> <span class="number">1</span><span class="punct">.</span><span class="ident">week</span><span class="punct">.</span><span class="ident">from_now</span>
+<span class="punct">})</span>
+</pre></p>
+<h3>Find events this month for Ghostface Killah and Raekwon using mbid (music brainz id)</h3>
+<p><pre class='syntax'>
+<span class="comment"># 3b39abeb-0064-4eed-9ddd-ee47a45c54cb =&gt; mbid for Ghostface Killah</span>
+<span class="comment"># 4e954b02-fae2-4bd7-9547-e055a6ac0527 =&gt; mbid for Raekwon</span>
+<span class="ident">events</span> <span class="punct">=</span> <span class="constant">Bandsintown</span><span class="punct">::</span><span class="constant">Event</span><span class="punct">.</span><span class="ident">search</span><span class="punct">({</span>
+  <span class="symbol">:artists</span> <span class="punct">=&gt;</span> <span class="punct">[</span>
+    <span class="punct">'</span><span class="string">mbid_3b39abeb-0064-4eed-9ddd-ee47a45c54cb</span><span class="punct">',</span> 
+    <span class="punct">'</span><span class="string">mbid_4e954b02-fae2-4bd7-9547-e055a6ac0527</span><span class="punct">'</span>
+  <span class="punct">],</span> 
+  <span class="symbol">:start_date</span> <span class="punct">=&gt;</span> <span class="constant">Time</span><span class="punct">.</span><span class="ident">now</span><span class="punct">.</span><span class="ident">beginning_of_month</span><span class="punct">,</span> 
+  <span class="symbol">:end_date</span> <span class="punct">=&gt;</span> <span class="constant">Time</span><span class="punct">.</span><span class="ident">now</span><span class="punct">.</span><span class="ident">end_of_month</span>
 <span class="punct">})</span>
 </pre></p>
 <h3>Find recommended events around Boston, MA for fans of Led Zeppelin</h3>

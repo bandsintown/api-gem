@@ -26,7 +26,17 @@ For more information visit http://www.bandsintown.com/api/requests.
 
 === Find all upcoming events for a given artist
 
-  artist = Bandsintown::Artist.new("The Killers")
+  artist = Bandsintown::Artist.new({
+    :name => "The Killers"
+  })
+  events = artist.events
+
+=== Find all upcoming events for a given artist using mbid (music brainz id)
+
+  # 486af4f0-a79b-468f-be73-527cd4caf6ea => mbid for Slick Rick
+  artist = Bandsintown::Artist.new({
+    :mbid => "486af4f0-a79b-468f-be73-527cd4caf6ea"
+  })
   events = artist.events
 
 === Find events this week around Boston, MA 
@@ -43,6 +53,19 @@ For more information visit http://www.bandsintown.com/api/requests.
     :artists => ['Mos Def', 'Talib Kweli'], 
     :start_date => Time.now, 
     :end_date => 1.week.from_now
+  })
+
+=== Find events this month for Ghostface Killah and Raekwon using mbid (music brainz id)
+
+  # 3b39abeb-0064-4eed-9ddd-ee47a45c54cb => mbid for Ghostface Killah
+  # 4e954b02-fae2-4bd7-9547-e055a6ac0527 => mbid for Raekwon
+  events = Bandsintown::Event.search({
+    :artists => [
+      'mbid_3b39abeb-0064-4eed-9ddd-ee47a45c54cb', 
+      'mbid_4e954b02-fae2-4bd7-9547-e055a6ac0527'
+    ], 
+    :start_date => Time.now.beginning_of_month, 
+    :end_date => Time.now.end_of_month
   })
 
 === Find recommended events around Boston, MA for fans of Led Zeppelin
