@@ -1,11 +1,12 @@
 module Bandsintown
   class Artist < Base
     
-    attr_accessor :name, :events
+    attr_accessor :name, :bandsintown_url, :mbid, :events
     
-    def initialize(name, url = nil)
-      @name = name
-      @bandsintown_url = url || build_bandsintown_url
+    def initialize(options = {})
+      @name = options[:name]
+      @mbid = options[:mbid]
+      @bandsintown_url = options[:url] || build_bandsintown_url
     end
     
     #Returns an array of Bandsintown::Event objects for each of the artist's upcoming events available through bandsintown.com.
@@ -23,10 +24,14 @@ module Bandsintown
     # name used in api requests. / and ? must be double escaped.
     #
     def api_name
-      name = @name.dup
-      name.gsub!('/', CGI.escape('/'))
-      name.gsub!('?', CGI.escape('?'))
-      URI.escape(name)
+      if @name
+        name = @name.dup
+        name.gsub!('/', CGI.escape('/'))
+        name.gsub!('?', CGI.escape('?'))
+        URI.escape(name)
+      else
+        "mbid_#{@mbid}"
+      end
     end
     
     def self.resource_path
@@ -36,13 +41,17 @@ module Bandsintown
     private
     
     def build_bandsintown_url
-      name = @name.dup
-      name.gsub!('&', 'And')
-      name.gsub!('+', 'Plus')
-      name = name.split.map { |w| w.capitalize }.join if name =~ /\s/
-      name.gsub!('/', CGI.escape('/'))
-      name.gsub!('?', CGI.escape('?'))
-      "http://www.bandsintown.com/#{URI.escape(name)}"
+      if @name
+        name = @name.dup
+        name.gsub!('&', 'And')
+        name.gsub!('+', 'Plus')
+        name = name.split.map { |w| w.capitalize }.join if name =~ /\s/
+        name.gsub!('/', CGI.escape('/'))
+        name.gsub!('?', CGI.escape('?'))
+        "http://www.bandsintown.com/#{URI.escape(name)}"
+      else
+        "http://www.bandsintown.com/mbid_#{@mbid}"
+      end
     end
     
   end

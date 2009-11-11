@@ -84,7 +84,7 @@ module Bandsintown
     end
     
     def self.build_from_json(json_hash)
-      event                  = Bandsintown::Event.new()
+      event                  = Bandsintown::Event.new
       event.bandsintown_id   = json_hash["id"]
       event.bandsintown_url  = json_hash["url"]
       event.datetime         = Time.parse(json_hash["datetime"])
@@ -93,8 +93,7 @@ module Bandsintown
       event.ticket_status    = json_hash["ticket_status"]
       event.on_sale_datetime = Time.parse(json_hash["on_sale_datetime"]) rescue nil
       event.venue            = Bandsintown::Venue.new(json_hash["venue"])
-      event.artists          = []
-      json_hash["artists"].each { |artist| event.artists << Bandsintown::Artist.new(artist["name"], artist["url"]) }
+      event.artists          = json_hash["artists"].map { |artist| Bandsintown::Artist.new(artist.symbolize_keys) }
       event
     end
     

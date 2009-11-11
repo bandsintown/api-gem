@@ -62,8 +62,8 @@ describe Bandsintown::Event do
       @datetime   = "2008-09-30T19:30:00"
       @ticket_url = "http://www.bandsintown.com/event/745095/buy_tickets"
       
-      @artist_1 = { "name" => "Little Brother", "url" => "http://www.bandsintown.com/LittleBrother" }
-      @artist_2 = { "name" => "Joe Scudda", "url" => "http://www.bandsintown.com/JoeScudda" }
+      @artist_1 = { "name" => "Little Brother", "url" => "http://www.bandsintown.com/LittleBrother", "mbid" => "b929c0c9-5de0-4d87-8eb9-365ad1725629" }
+      @artist_2 = { "name" => "Joe Scudda", "url" => "http://www.bandsintown.com/JoeScudda", "mbid" => nil } # sorry Joe its just an example
             
       @venue_hash = {
         "id" => 327987,
@@ -125,10 +125,10 @@ describe Bandsintown::Event do
       @built_event.venue.should == built_venue
     end
     it "should set the Event's Artists" do
-      built_artist_1 = mock(Bandsintown::Artist, :name => "Little Brother")
-      built_artist_2 = mock(Bandsintown::Artist, :name => "Joe Scudda")
-      Bandsintown::Artist.should_receive(:new).with(@artist_1["name"], @artist_1["url"]).and_return(built_artist_1)
-      Bandsintown::Artist.should_receive(:new).with(@artist_2["name"], @artist_2["url"]).and_return(built_artist_2)
+      built_artist_1 = mock(Bandsintown::Artist)
+      built_artist_2 = mock(Bandsintown::Artist)
+      Bandsintown::Artist.should_receive(:new).with(:name => @artist_1["name"], :url => @artist_1["url"], :mbid => @artist_1["mbid"]).and_return(built_artist_1)
+      Bandsintown::Artist.should_receive(:new).with(:name => @artist_2["name"], :url => @artist_2["url"], :mbid => @artist_2["mbid"]).and_return(built_artist_2)
       @built_event = Bandsintown::Event.build_from_json(@event_hash)
       @built_event.artists.should == [built_artist_1, built_artist_2]
     end
