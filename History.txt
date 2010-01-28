@@ -1,3 +1,8 @@
+== 0.1.3 2010-01-28
+* Added Artists - Get API method (Bandsintown::Artist.get)
+* Added Bandsintown::Artist#on_tour? method
+* Updated readme and documentation for Bandsintown::Artist.get and Bandsintown::Artist#on_tour?
+
 == 0.1.2 2009-11-11
 * updated Bandsintown::Artist class with support for mbid / music brainz id and additional documentation
 

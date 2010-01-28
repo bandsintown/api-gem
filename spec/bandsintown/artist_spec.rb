@@ -24,6 +24,10 @@ describe Bandsintown::Artist do
       @artist.should respond_to(:mbid)
       @artist.should respond_to(:mbid=)
     end
+    it "should have an attr_accessor for @upcoming_events_count" do
+      @artist.should respond_to(:upcoming_events_count)
+      @artist.should respond_to(:upcoming_events_count=)
+    end
   end
   
   describe ".initialize(options = {})" do
@@ -138,6 +142,82 @@ describe Bandsintown::Artist do
     it "should use 'mbid_<@mbid>' only if @name is nil" do
       Bandsintown::Artist.new(:name => 'name', :mbid => 'mbid').api_name.should == 'name'
       Bandsintown::Artist.new(:mbid => '1234').api_name.should == 'mbid_1234'
+    end
+  end
+  
+  describe ".get(options = {})" do
+    before(:each) do
+      @options = { :name => "Pete Rock" }
+      @artist = Bandsintown::Artist.new(@options)
+      Bandsintown::Artist.stub!(:request_and_parse).and_return('json')
+      Bandsintown::Artist.stub!(:build_from_json).and_return('built artist')
+    end
+    it "should initialize a Bandsintown::Artist from options" do
+      Bandsintown::Artist.should_receive(:new).with(@options).and_return(@artist)
+      Bandsintown::Artist.get(@options)
+    end
+    it "should request and parse a call to the BIT artists - get API method using api_name" do
+      Bandsintown::Artist.should_receive(:request_and_parse).with(@artist.api_name).and_return('json')
+      Bandsintown::Artist.get(@options)
+    end
+    it "should return the result of Bandsintown::Artist.build_from_json with the response data" do
+      Bandsintown::Artist.should_receive(:build_from_json).with('json').and_return('built artist')
+      Bandsintown::Artist.get(@options).should == 'built artist'
+    end
+  end
+  
+  describe ".build_from_json(json_hash)" do
+    before(:each) do
+      @name = "Pete Rock"
+      @bandsintown_url = "http://www.bandsintown.com/PeteRock"
+      @mbid = "39a973f2-0785-4ef6-90d9-551378864f89"
+      @upcoming_events_count = 7
+      @json_hash = {
+        "name" => @name,
+        "url" => @bandsintown_url,
+        "mbid" => @mbid,
+        "upcoming_events_count" => @upcoming_events_count
+      }
+      @artist = Bandsintown::Artist.build_from_json(@json_hash)
+    end
+    it "should return an instance of Bandsintown::Artist" do
+      @artist.should be_instance_of(Bandsintown::Artist)
+    end
+    it "should set the name" do
+      @artist.name.should == @name
+    end
+    it "should set the mbid" do
+      @artist.mbid.should == @mbid
+    end
+    it "should set the bandsintown_url" do 
+      @artist.bandsintown_url.should == @bandsintown_url
+    end
+    it "should set the upcoming events count" do
+      @artist.upcoming_events_count.should == @upcoming_events_count
+    end
+  end
+  
+  describe "#on_tour?" do
+    it "should return true if @upcoming_events_count is greater than 0" do
+      @artist.upcoming_events_count = 1
+      @artist.should be_on_tour
+    end
+    it "should return false if @upcoming_events_count is 0" do
+      @artist.upcoming_events_count = 0
+      @artist.should_not be_on_tour
+    end
+    it "should raise an error if both @upcoming_events_count and @events are nil" do
+      lambda { @artist.on_tour? }.should raise_error
+    end
+    describe "when @upcoming_events_count is nil" do
+      it "should return true if @events is not empty (.events only returns upcoming events)" do
+        @artist.events = [mock(Bandsintown::Event)]
+        @artist.should be_on_tour
+      end
+      it "should return false if @events is empty" do
+        @artist.events = []
+        @artist.should_not be_on_tour
+      end
     end
   end
 end

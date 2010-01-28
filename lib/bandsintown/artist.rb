@@ -1,7 +1,7 @@
 module Bandsintown
   class Artist < Base
     
-    attr_accessor :name, :bandsintown_url, :mbid, :events
+    attr_accessor :name, :bandsintown_url, :mbid, :events, :upcoming_events_count
     
     def initialize(options = {})
       @name = options[:name]
@@ -39,6 +39,47 @@ module Bandsintown
       else
         "mbid_#{@mbid}"
       end
+    end
+
+    #Returns true if there is at least 1 upcoming event for the artist, or false if there are 0 upcoming events for the artist.
+    #Should only be used for artists requested using Bandsintown::Artist.get, or with events already loaded, otherwise an error will be raised.
+    #====example:
+    #   # using .get method
+    #   artist = Bandsintown::Artist.get(:name => "Little Brother")
+    #   artist_on_tour = artist.on_tour?
+    #
+    #   # using .initialize and .events methods
+    #   artist = Bandsintown::Artist.get(:name => "Little Brother")
+    #   events = artist.events
+    #   artist_on_tour = artist.on_tour?
+    #
+    def on_tour?
+      (@upcoming_events_count || @events.size) > 0
+    end
+    
+    #Returns a Bandsintown::Artist object with basic information for a single artist, including the number of upcoming events. 
+    #Useful in determining if an artist is on tour without requesting the event data.
+    #See http://www.bandsintown.com/api/requests#artists-get for more information.
+    #Can be used with either artist name or mbid (music brainz id).
+    #====example:
+    #   # using artist name
+    #   artist = Bandsintown::Artist.get(:name => "Little Brother")
+    #
+    #   # using mbid for Little Brother
+    #   artist = Bandsintown::Artist.get(:mbid => "b929c0c9-5de0-4d87-8eb9-365ad1725629")
+    #
+    def self.get(options = {})
+      request_url = Bandsintown::Artist.new(options).api_name
+      build_from_json(request_and_parse(request_url))
+    end
+    
+    def self.build_from_json(json_hash)
+      artist = Bandsintown::Artist.new({})
+      artist.name = json_hash['name']
+      artist.mbid = json_hash['mbid']
+      artist.bandsintown_url = json_hash['url']
+      artist.upcoming_events_count = json_hash['upcoming_events_count']
+      artist
     end
     
     def self.resource_path
