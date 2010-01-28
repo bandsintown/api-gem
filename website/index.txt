@@ -45,6 +45,27 @@ artist = Bandsintown::Artist.new({
 events = artist.events
 </pre>
 
+h3. Find basic information about an artist without requesting event data
+
+<pre syntax="ruby">
+  artist = Bandsintown::Artist.get({
+    :name => "M.I.A."
+  })
+  number_of_upcoming_mia_events = artist.upcoming_events_count
+  mia_on_tour = artist.on_tour?
+</pre>
+
+h3. Find basic information about an artist without requesting event data, using mbid
+
+<pre syntax="ruby">
+  # 5f6be871-eb98-42f1-bce4-5a3d8212c281 => mbid for M.I.A.
+  artist = Bandsintown::Artist.get({
+    :mbid => "5f6be871-eb98-42f1-bce4-5a3d8212c281"
+  })
+  number_of_upcoming_mia_events = artist.upcoming_events_count
+  mia_on_tour = artist.on_tour?
+</pre>
+
 h3. Find events this week around Boston, MA
 
 <pre syntax="ruby">
