@@ -68,20 +68,24 @@
 </pre></p>
 <h3>Find basic information about an artist without requesting event data</h3>
 <p><pre class='syntax'>
-  <span class="ident">artist</span> <span class="punct">=</span> <span class="constant">Bandsintown</span><span class="punct">::</span><span class="constant">Artist</span><span class="punct">.</span><span class="ident">get</span><span class="punct">({</span>
-    <span class="symbol">:name</span> <span class="punct">=&gt;</span> <span class="punct">&quot;</span><span class="string">M.I.A.</span><span class="punct">&quot;</span>
-  <span class="punct">})</span>
-  <span class="ident">number_of_upcoming_mia_events</span> <span class="punct">=</span> <span class="ident">artist</span><span class="punct">.</span><span class="ident">upcoming_events_count</span>
-  <span class="ident">mia_on_tour</span> <span class="punct">=</span> <span class="ident">artist</span><span class="punct">.</span><span class="ident">on_tour?</span>
+<span class="ident">artist</span> <span class="punct">=</span> <span class="constant">Bandsintown</span><span class="punct">::</span><span class="constant">Artist</span><span class="punct">.</span><span class="ident">get</span><span class="punct">({</span>
+  <span class="symbol">:name</span> <span class="punct">=&gt;</span> <span class="punct">&quot;</span><span class="string">Raekwon</span><span class="punct">&quot;</span>
+<span class="punct">})</span>
+<span class="ident">artist</span><span class="punct">.</span><span class="ident">upcoming_events_count</span>
+<span class="punct">=&gt;</span> <span class="number">5</span>
+<span class="ident">artist</span><span class="punct">.</span><span class="ident">on_tour?</span>
+<span class="punct">=&gt;</span> <span class="constant">true</span>
 </pre></p>
 <h3>Find basic information about an artist without requesting event data, using mbid</h3>
 <p><pre class='syntax'>
-  <span class="comment"># 5f6be871-eb98-42f1-bce4-5a3d8212c281 =&gt; mbid for M.I.A.</span>
-  <span class="ident">artist</span> <span class="punct">=</span> <span class="constant">Bandsintown</span><span class="punct">::</span><span class="constant">Artist</span><span class="punct">.</span><span class="ident">get</span><span class="punct">({</span>
-    <span class="symbol">:mbid</span> <span class="punct">=&gt;</span> <span class="punct">&quot;</span><span class="string">5f6be871-eb98-42f1-bce4-5a3d8212c281</span><span class="punct">&quot;</span>
-  <span class="punct">})</span>
-  <span class="ident">number_of_upcoming_mia_events</span> <span class="punct">=</span> <span class="ident">artist</span><span class="punct">.</span><span class="ident">upcoming_events_count</span>
-  <span class="ident">mia_on_tour</span> <span class="punct">=</span> <span class="ident">artist</span><span class="punct">.</span><span class="ident">on_tour?</span>
+<span class="comment"># 4e954b02-fae2-4bd7-9547-e055a6ac0527 =&gt; mbid for Raekwon</span>
+<span class="ident">artist</span> <span class="punct">=</span> <span class="constant">Bandsintown</span><span class="punct">::</span><span class="constant">Artist</span><span class="punct">.</span><span class="ident">get</span><span class="punct">({</span>
+  <span class="symbol">:mbid</span> <span class="punct">=&gt;</span> <span class="punct">&quot;</span><span class="string">4e954b02-fae2-4bd7-9547-e055a6ac0527</span><span class="punct">&quot;</span>
+<span class="punct">})</span>
+<span class="ident">artist</span><span class="punct">.</span><span class="ident">upcoming_events_count</span>
+<span class="punct">=&gt;</span> <span class="number">5</span>
+<span class="ident">artist</span><span class="punct">.</span><span class="ident">on_tour?</span>
+<span class="punct">=&gt;</span> <span class="constant">true</span>
 </pre></p>
 <h3>Find events this week around Boston, MA</h3>
 <p><pre class='syntax'>
