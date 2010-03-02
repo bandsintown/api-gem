@@ -79,6 +79,27 @@ module Bandsintown
       events
     end
     
+    #Returns an array of Bandsintown::Event objects going on sale in the next week, and matching the options passed.
+    #See http://www.bandsintown.com/api/requests#on-sale-soon for more information.
+    #====options:
+    #:location, :radius, and :date options are supported.  See the Bandsintown::Event.search documentation for accepted formats.
+    #
+    #====notes:
+    #If :location is given without :radius, a default radius of 25 miles will be used.
+    #
+    #====examples:
+    #All upcoming concerts (first page w/ 50 results) within 10 miles of Boston, MA, with tickets going on sale in the next week:
+    #   Bandsintown::Event.on_sale_soon(:location => "Boston, MA", :radius => 10)
+    #
+    #All concerts (first page w/ 50 results) happening between Mar 01 2010 and Mar 15 2010 within 25 miles of London, UK, with tickets going on sale in the next week:
+    #   Bandsintown::Event.on_sale_soon(:location => "London, UK", :start_date => "2010-03-01", :end_date => "2010-03-15")
+    #
+    def self.on_sale_soon(options = {})
+      events = []
+      self.request_and_parse("on_sale_soon", options).each { |event| events << Bandsintown::Event.build_from_json(event) }
+      events
+    end
+    
     def self.resource_path
       "events"
     end

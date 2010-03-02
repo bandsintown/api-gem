@@ -120,6 +120,15 @@ h3. Find events added/updated/deleted within the last day
 events = Bandsintown::Event.daily
 </pre>
 
+h3. Find events going on sale in the next week within 10 miles of Boston, MA
+
+<pre syntax="ruby">
+events = Bandsintown::Event.on_sale_soon({
+  :location => "Boston, MA",
+  :radius => 10
+})
+</pre>
+
 h2. Source
 
 <pre>git clone git://github.com/bandsintown/bandsintown.git</pre>

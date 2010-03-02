@@ -1,3 +1,7 @@
+== 0.1.4 2010-03-02
+* Added Events - On Sale Soon API method (Bandsintown::Event.on_sale_soon)
+* Corrected some typos in Bandsintown::Event spec
+
 == 0.1.3 2010-01-28
 * Added Artists - Get API method (Bandsintown::Artist.get)
 * Added Bandsintown::Artist#on_tour? method

@@ -8,8 +8,10 @@ describe Bandsintown::Event do
     end
   end
   
-  describe ".search(args = {})" do
-    @args = { :location => "Boston, MA", :date => "2009-01-01" }
+  describe ".search(options = {})" do
+    before(:each) do
+      @args = { :location => "Boston, MA", :date => "2009-01-01" }
+    end
     it "should request and parse a call to the BIT events search api method" do
       Bandsintown::Event.should_receive(:request_and_parse).with("search", @args).and_return([])
       Bandsintown::Event.search(@args)
@@ -25,8 +27,10 @@ describe Bandsintown::Event do
     end
   end
   
-  describe ".recommended(args = {})" do
-    @args = { :location => "Boston, MA", :date => "2009-01-01" }
+  describe ".recommended(options = {})" do
+    before(:each) do
+      @args = { :location => "Boston, MA", :date => "2009-01-01" }
+    end
     it "should request and parse a call to the BIT recommended events api method" do
       Bandsintown::Event.should_receive(:request_and_parse).with("recommended", @args).and_return([])
       Bandsintown::Event.recommended(@args)
@@ -46,6 +50,22 @@ describe Bandsintown::Event do
     it "should request and parse a call to the BIT daily events api method" do
       Bandsintown::Event.should_receive(:request_and_parse).with("daily").and_return([])
       Bandsintown::Event.daily
+    end
+    it "should return an array of Bandsintown::Events built from the response" do
+      event = mock(Bandsintown::Event)
+      Bandsintown::Event.stub!(:request_and_parse).and_return(['event json'])
+      Bandsintown::Event.should_receive(:build_from_json).with('event json').and_return(event)
+      Bandsintown::Event.daily.should == [event]
+    end
+  end
+  
+  describe ".on_sale_soon(options = {})" do
+    before(:each) do
+      @args = { :location => "Boston, MA", :radius => 50, :date => "2010-03-02" }
+    end
+    it "should request and parse a call to the BIT on sale soon api method" do
+      Bandsintown::Event.should_receive(:request_and_parse).with("on_sale_soon", @args).and_return([])
+      Bandsintown::Event.on_sale_soon(@args)
     end
     it "should return an array of Bandsintown::Events built from the response" do
       event = mock(Bandsintown::Event)

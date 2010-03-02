@@ -96,9 +96,16 @@ For more information visit http://www.bandsintown.com/api/requests.
     :location => 'Boston, MA'
   })
 
-=== find events added/updated/deleted within the last day
+=== Find events added/updated/deleted within the last day
 
   events = Bandsintown::Event.daily
+
+=== Find events going on sale in the next week within 10 miles of Boston, MA
+
+  events = Bandsintown::Event.on_sale_soon({
+    :location => "Boston, MA",
+    :radius => 10
+  })
 
 == Links
 

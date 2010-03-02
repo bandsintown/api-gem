@@ -127,6 +127,13 @@
 <p><pre class='syntax'>
 <span class="ident">events</span> <span class="punct">=</span> <span class="constant">Bandsintown</span><span class="punct">::</span><span class="constant">Event</span><span class="punct">.</span><span class="ident">daily</span>
 </pre></p>
+<h3>Find events going on sale in the next week within 10 miles of Boston, MA</h3>
+<p><pre class='syntax'>
+<span class="ident">events</span> <span class="punct">=</span> <span class="constant">Bandsintown</span><span class="punct">::</span><span class="constant">Event</span><span class="punct">.</span><span class="ident">on_sale_soon</span><span class="punct">({</span>
+  <span class="symbol">:location</span> <span class="punct">=&gt;</span> <span class="punct">&quot;</span><span class="string">Boston, MA</span><span class="punct">&quot;,</span>
+  <span class="symbol">:radius</span> <span class="punct">=&gt;</span> <span class="number">10</span>
+<span class="punct">})</span>
+</pre></p>
 <h2>Source</h2>
 <pre>git clone git://github.com/bandsintown/bandsintown.git</pre>
 <h2>Links</h2>
