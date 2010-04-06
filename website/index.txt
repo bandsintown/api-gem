@@ -129,6 +129,23 @@ events = Bandsintown::Event.on_sale_soon({
 })
 </pre>
 
+h3. Find venues with name beginning with "House of Blues" near San Diego, CA
+
+<pre syntax="ruby">
+venues = Bandsintown::Venue.search({
+  :query => "House of Blues",
+  :location => "San Diego, CA"
+})
+</pre>
+
+h3. Find all upcoming events for a given venue
+
+<pre syntax="ruby">
+# 1700 => Bandsintown venue ID for Paradise Rock Club in Boston, MA
+venue = Bandsintown::Venue.new(1700)
+events = venue.events
+</pre>
+
 h2. Source
 
 <pre>git clone git://github.com/bandsintown/bandsintown.git</pre>

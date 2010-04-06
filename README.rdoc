@@ -107,6 +107,19 @@ For more information visit http://www.bandsintown.com/api/requests.
     :radius => 10
   })
 
+=== Find venues with name beginning with "House of Blues" near San Diego, CA
+
+  venues = Bandsintown::Venue.search({
+    :query => "House of Blues",
+    :location => "San Diego, CA"
+  })
+
+=== Find all upcoming events for a given venue
+
+  # 1700 => Bandsintown venue ID for Paradise Rock Club in Boston, MA
+  venue = Bandsintown::Venue.new(1700)
+  events = venue.events
+
 == Links
 
 * RDoc[http://bandsintown.rubyforge.org/rdoc]

@@ -1,3 +1,8 @@
+== 0.1.5 2010-04-06
+* Added Venues - Events API method (Bandsintown::Venue#events)
+* Added Venues - Search API method (Bandsintown::Venues.search)
+* Refactored Bandsintown::Venue initialization
+
 == 0.1.4 2010-03-02
 * Added Events - On Sale Soon API method (Bandsintown::Event.on_sale_soon)
 * Corrected some typos in Bandsintown::Event spec

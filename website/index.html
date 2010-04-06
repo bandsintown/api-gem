@@ -34,7 +34,7 @@
     <div class="sidebar">
       <div id="version" class="clickable" onclick='document.location = "http://rubyforge.org/projects/bandsintown"; return false'>
         <p>Get Version</p>
-        <a href="http://rubyforge.org/projects/bandsintown" class="numbers">0.1.3</a>
+        <a href="http://rubyforge.org/projects/bandsintown" class="numbers">0.1.5</a>
       </div>
     </div>
     <h2>Description</h2>
@@ -133,6 +133,19 @@
   <span class="symbol">:location</span> <span class="punct">=&gt;</span> <span class="punct">&quot;</span><span class="string">Boston, MA</span><span class="punct">&quot;,</span>
   <span class="symbol">:radius</span> <span class="punct">=&gt;</span> <span class="number">10</span>
 <span class="punct">})</span>
+</pre></p>
+<h3>Find venues with name beginning with &#8220;House of Blues&#8221; near San Diego, CA</h3>
+<p><pre class='syntax'>
+<span class="ident">venues</span> <span class="punct">=</span> <span class="constant">Bandsintown</span><span class="punct">::</span><span class="constant">Venue</span><span class="punct">.</span><span class="ident">search</span><span class="punct">({</span>
+  <span class="symbol">:query</span> <span class="punct">=&gt;</span> <span class="punct">&quot;</span><span class="string">House of Blues</span><span class="punct">&quot;,</span>
+  <span class="symbol">:location</span> <span class="punct">=&gt;</span> <span class="punct">&quot;</span><span class="string">San Diego, CA</span><span class="punct">&quot;</span>
+<span class="punct">})</span>
+</pre></p>
+<h3>Find all upcoming events for a given venue</h3>
+<p><pre class='syntax'>
+<span class="comment"># 1700 =&gt; Bandsintown venue ID for Paradise Rock Club in Boston, MA</span>
+<span class="ident">venue</span> <span class="punct">=</span> <span class="constant">Bandsintown</span><span class="punct">::</span><span class="constant">Venue</span><span class="punct">.</span><span class="ident">new</span><span class="punct">(</span><span class="number">1700</span><span class="punct">)</span>
+<span class="ident">events</span> <span class="punct">=</span> <span class="ident">venue</span><span class="punct">.</span><span class="ident">events</span>
 </pre></p>
 <h2>Source</h2>
 <pre>git clone git://github.com/bandsintown/bandsintown.git</pre>
