@@ -111,7 +111,7 @@ describe Bandsintown::Event do
       @built_event = Bandsintown::Event.build_from_json(@event_hash)
     end
     it "should return a built Event" do
-      @built_event.class.should == Bandsintown::Event
+      @built_event.should be_instance_of(Bandsintown::Event)
     end
     it "should set the Event id" do
       @built_event.bandsintown_id.should == @event_id
@@ -139,18 +139,31 @@ describe Bandsintown::Event do
       Bandsintown::Event.build_from_json(@event_hash).on_sale_datetime.should be_nil
     end
     it "should set the Event's Venue" do
-      built_venue = mock(Bandsintown::Venue)
-      Bandsintown::Venue.should_receive(:new).with(@venue_hash).and_return(built_venue)
-      @built_event = Bandsintown::Event.build_from_json(@event_hash)
-      @built_event.venue.should == built_venue
+      venue = @built_event.venue
+      venue.should be_instance_of(Bandsintown::Venue)
+      venue.bandsintown_id.should == 327987
+      venue.bandsintown_url.should == "http://www.bandsintown.com/venue/327987"
+      venue.region.should == "MA"
+      venue.city.should == "Boston"
+      venue.name.should == "Paradise Rock Club"
+      venue.country.should == "United States"
+      venue.latitude.should == 42.37
+      venue.longitude.should == 71.03
     end
     it "should set the Event's Artists" do
-      built_artist_1 = mock(Bandsintown::Artist)
-      built_artist_2 = mock(Bandsintown::Artist)
-      Bandsintown::Artist.should_receive(:new).with(:name => @artist_1["name"], :url => @artist_1["url"], :mbid => @artist_1["mbid"]).and_return(built_artist_1)
-      Bandsintown::Artist.should_receive(:new).with(:name => @artist_2["name"], :url => @artist_2["url"], :mbid => @artist_2["mbid"]).and_return(built_artist_2)
-      @built_event = Bandsintown::Event.build_from_json(@event_hash)
-      @built_event.artists.should == [built_artist_1, built_artist_2]
+      artists = @built_event.artists
+      artists.should be_instance_of(Array)
+      artists.size.should == 2
+      
+      artists.first.should be_instance_of(Bandsintown::Artist)
+      artists.first.name.should == "Little Brother"
+      artists.first.bandsintown_url.should == "http://www.bandsintown.com/LittleBrother"
+      artists.first.mbid.should == "b929c0c9-5de0-4d87-8eb9-365ad1725629"
+      
+      artists.last.should be_instance_of(Bandsintown::Artist)
+      artists.last.name.should == "Joe Scudda"
+      artists.last.bandsintown_url.should == "http://www.bandsintown.com/JoeScudda"
+      artists.last.mbid.should be_nil          
     end
   end
   
