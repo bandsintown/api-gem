@@ -11,21 +11,37 @@ describe Bandsintown::Base do
     end
   end
   
-  describe ".request(api_method, args={})" do
-    it "should make a request to the connection url" do
-      resource_path = "events"
-      method        = "search"
-      args          = { :arg => "value" }
-      Bandsintown::Base.stub!(:resource_path).and_return(resource_path)
-      Bandsintown::Base.connection.should_receive(:request).with(resource_path, method, args)
-      Bandsintown::Base.request(method, args)
+  describe ".request(http_method, api_method, params={})" do
+    before(:each) do
+      Bandsintown::Base.stub!(:resource_path).and_return("events")
+    end
+    it "should make a GET request to the connection url using api_method and params when http_method == :get" do
+      http_method = :get 
+      api_method = "search"
+      params = { :arg => "value" }
+      Bandsintown::Base.stub!(:resource_path).and_return("events")
+      Bandsintown::Base.connection.should_receive(:get).with("events", api_method, params).and_return("response")
+      Bandsintown::Base.request(http_method, api_method, params).should == "response"
+    end
+    it "should make a POST request to the connection url using api_method and params when http_method == :post" do
+      http_method = :post 
+      api_method = "create"
+      params = { :arg => "value" }
+      Bandsintown::Base.connection.should_receive(:post).with("events", api_method, params).and_return("response")
+      Bandsintown::Base.request(http_method, api_method, params).should == "response"
+    end
+    it "should raise an error if http_method is not :get or :post" do
+      http_method = :delete
+      api_method = "search"
+      params = { :arg => "value" }
+      lambda { Bandsintown::Base.request(http_method, api_method, params) }.should raise_error(ArgumentError, "only :get and :post requests are supported")
     end
   end
   
   describe ".parse(response)" do
     it "should check the response for errors" do
       response = "response"
-      parsed   = mock("parsed json")
+      parsed = mock("parsed json")
       JSON.stub!(:parse).and_return(parsed)
       Bandsintown::Base.should_receive(:check_for_errors).with(parsed)
       Bandsintown::Base.parse(response)
@@ -36,23 +52,23 @@ describe Bandsintown::Base do
     end
   end
   
-  describe ".request_and_parse(api_method, args={})" do
+  describe ".request_and_parse(http_method, api_method, params={})" do
     before(:each) do
-      @resource_path = "events"
-      @method        = "search"
-      @args          = { :arg => "value" }
-      Bandsintown::Base.stub!(:resource_path).and_return(@resource_path)
-      @response = mock("WWW::Mechanize response")
+      @http_method = :get 
+      @api_method = "search"
+      @params = { :arg => "value" }
+      Bandsintown::Base.stub!(:resource_path).and_return("events")
+      @response = mock("HTTP response body")
     end
-    it "should make a request" do
-      Bandsintown::Base.should_receive(:request).with(@method, @args).and_return(@response)
+    it "should make a request with the http method, api method, and params" do
+      Bandsintown::Base.should_receive(:request).with(@http_method, @api_method, @params).and_return(@response)
       Bandsintown::Base.stub!(:parse)
-      Bandsintown::Base.request_and_parse(@method, @args)
+      Bandsintown::Base.request_and_parse(@http_method, @api_method, @params)
     end
     it "should parse the response" do
       Bandsintown::Base.stub!(:request).and_return(@response)
       Bandsintown::Base.should_receive(:parse).with(@response)
-      Bandsintown::Base.request_and_parse(@method, @args)
+      Bandsintown::Base.request_and_parse(@http_method, @api_method, @params)
     end
   end
   

@@ -1,21 +1,19 @@
 module Bandsintown
   class Connection
-    attr_accessor :base_url
+    attr_accessor :base_url, :client
     
     def initialize(base_url)
       @base_url = base_url
     end
     
-    def request(resource_path, method_path, args = {})
-      request_url = "#{@base_url}/#{resource_path}/#{method_path}?#{encode(args.symbolize_keys)}"
+    def get(resource_path, method_path, args = {})
+      request_url = "#{@base_url}/#{resource_path}/#{method_path}?#{encode(args.symbolize_keys).to_param}"
       begin
-        open(request_url).read
-      rescue OpenURI::HTTPError => error_response
-        error_response.io.read
+        RestClient.get(request_url)
+      rescue RestClient::ResourceNotFound => error_response
+        error_response.response
       end
     end
-    
-    private 
     
     def encode(args = {})
       start_date = args.delete(:start_date)
@@ -29,7 +27,7 @@ module Bandsintown
       end
       args[:format] = "json"
       args[:app_id] = Bandsintown.app_id
-      args.to_param
+      args
     end
     
   end

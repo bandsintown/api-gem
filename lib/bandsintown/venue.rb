@@ -17,7 +17,7 @@ module Bandsintown
     #   upcoming_paradise_events = venue.events
     #
     def events
-      @events ||= self.class.request_and_parse("#{@bandsintown_id}/events").map { |event_hash| Bandsintown::Event.build_from_json(event_hash) }
+      @events ||= self.class.request_and_parse(:get, "#{@bandsintown_id}/events").map { |event_hash| Bandsintown::Event.build_from_json(event_hash) }
     end 
     
     #Returns an array of Bandsintown::Venue objects matching the options passed.
@@ -48,7 +48,7 @@ module Bandsintown
     #   Bandsintown::Venue.search(:query => "Club", :per_page => 100, :page => 2, :location => "use_geoip")
     #
     def self.search(options = {})
-      self.request_and_parse("search", options).map { |venue_hash| Bandsintown::Venue.build_from_json(venue_hash) }
+      self.request_and_parse(:get, "search", options).map { |venue_hash| Bandsintown::Venue.build_from_json(venue_hash) }
     end
 
     def self.resource_path

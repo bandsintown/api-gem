@@ -23,7 +23,7 @@ module Bandsintown
     #
     def events
       return @events unless @events.blank?
-      @events = self.class.request_and_parse("#{api_name}/events").map { |event| Bandsintown::Event.build_from_json(event) }
+      @events = self.class.request_and_parse(:get, "#{api_name}/events").map { |event| Bandsintown::Event.build_from_json(event) }
     end
     
     # Used in api requests as the RESTful resource id for artists (http://api.bandsintown.com/artists/id/method).
@@ -70,7 +70,7 @@ module Bandsintown
     #
     def self.get(options = {})
       request_url = Bandsintown::Artist.new(options).api_name
-      build_from_json(request_and_parse(request_url))
+      build_from_json(request_and_parse(:get, request_url))
     end
     
     def self.build_from_json(json_hash)

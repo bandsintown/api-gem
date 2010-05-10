@@ -13,7 +13,7 @@ describe Bandsintown::Event do
       @args = { :location => "Boston, MA", :date => "2009-01-01" }
     end
     it "should request and parse a call to the BIT events search api method" do
-      Bandsintown::Event.should_receive(:request_and_parse).with("search", @args).and_return([])
+      Bandsintown::Event.should_receive(:request_and_parse).with(:get, "search", @args).and_return([])
       Bandsintown::Event.search(@args)
     end
     it "should return an Array of Bandsintown::Event objects built from the response" do
@@ -32,7 +32,7 @@ describe Bandsintown::Event do
       @args = { :location => "Boston, MA", :date => "2009-01-01" }
     end
     it "should request and parse a call to the BIT recommended events api method" do
-      Bandsintown::Event.should_receive(:request_and_parse).with("recommended", @args).and_return([])
+      Bandsintown::Event.should_receive(:request_and_parse).with(:get, "recommended", @args).and_return([])
       Bandsintown::Event.recommended(@args)
     end
     it "should return an Array of Bandsintown::Event objects built from the response" do
@@ -48,7 +48,7 @@ describe Bandsintown::Event do
   
   describe ".daily" do
     it "should request and parse a call to the BIT daily events api method" do
-      Bandsintown::Event.should_receive(:request_and_parse).with("daily").and_return([])
+      Bandsintown::Event.should_receive(:request_and_parse).with(:get, "daily").and_return([])
       Bandsintown::Event.daily
     end
     it "should return an array of Bandsintown::Events built from the response" do
@@ -64,7 +64,7 @@ describe Bandsintown::Event do
       @args = { :location => "Boston, MA", :radius => 50, :date => "2010-03-02" }
     end
     it "should request and parse a call to the BIT on sale soon api method" do
-      Bandsintown::Event.should_receive(:request_and_parse).with("on_sale_soon", @args).and_return([])
+      Bandsintown::Event.should_receive(:request_and_parse).with(:get, "on_sale_soon", @args).and_return([])
       Bandsintown::Event.on_sale_soon(@args)
     end
     it "should return an array of Bandsintown::Events built from the response" do

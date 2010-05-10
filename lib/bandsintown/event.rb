@@ -44,7 +44,7 @@ module Bandsintown
     #
     def self.search(options = {})
       events = []
-      self.request_and_parse("search", options).each { |event| events << Bandsintown::Event.build_from_json(event) }
+      self.request_and_parse(:get, "search", options).each { |event| events << Bandsintown::Event.build_from_json(event) }
       events
     end
     
@@ -53,7 +53,7 @@ module Bandsintown
     #
     def self.daily
       events = []
-      self.request_and_parse("daily").each { |event| events << Bandsintown::Event.build_from_json(event) }
+      self.request_and_parse(:get, "daily").each { |event| events << Bandsintown::Event.build_from_json(event) }
       events
     end
     
@@ -75,7 +75,7 @@ module Bandsintown
     #
     def self.recommended(options = {})
       events = []
-      self.request_and_parse("recommended", options).each { |event| events << Bandsintown::Event.build_from_json(event) }
+      self.request_and_parse(:get, "recommended", options).each { |event| events << Bandsintown::Event.build_from_json(event) }
       events
     end
     
@@ -96,7 +96,7 @@ module Bandsintown
     #
     def self.on_sale_soon(options = {})
       events = []
-      self.request_and_parse("on_sale_soon", options).each { |event| events << Bandsintown::Event.build_from_json(event) }
+      self.request_and_parse(:get, "on_sale_soon", options).each { |event| events << Bandsintown::Event.build_from_json(event) }
       events
     end
     

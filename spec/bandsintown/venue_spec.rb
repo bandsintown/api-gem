@@ -112,7 +112,7 @@ describe Bandsintown::Venue do
       @args = { :location => "Boston, MA", :query => "House of Blues" }
     end
     it "should request and parse a call to the BIT venues search api method" do
-      Bandsintown::Venue.should_receive(:request_and_parse).with("search", @args).and_return([])
+      Bandsintown::Venue.should_receive(:request_and_parse).with(:get, "search", @args).and_return([])
       Bandsintown::Venue.search(@args)
     end
     it "should return an Array of Bandsintown::Venue objects built from the response" do
@@ -140,7 +140,7 @@ describe Bandsintown::Venue do
       @venue = Bandsintown::Venue.new(@bandsintown_id)
     end
     it "should request and parse a call to the BIT venues - events API method with @bandsintown_id" do
-      Bandsintown::Venue.should_receive(:request_and_parse).with("#{@bandsintown_id}/events").and_return([])
+      Bandsintown::Venue.should_receive(:request_and_parse).with(:get, "#{@bandsintown_id}/events").and_return([])
       @venue.events
     end
     it "should return an Array of Bandsintown::Event objects built from the response" do

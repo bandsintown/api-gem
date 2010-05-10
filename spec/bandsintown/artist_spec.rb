@@ -112,7 +112,7 @@ describe Bandsintown::Artist do
     end
     it "should request and parse a call to the BIT artist events API method and the artist's api name" do
       @artist.should_receive(:api_name).and_return('Little%20Brother')
-      Bandsintown::Artist.should_receive(:request_and_parse).with("Little%20Brother/events").and_return([])
+      Bandsintown::Artist.should_receive(:request_and_parse).with(:get, "Little%20Brother/events").and_return([])
       @artist.events
     end
     it "should return an Array of Bandsintown::Event objects built from the response" do
@@ -157,7 +157,7 @@ describe Bandsintown::Artist do
       Bandsintown::Artist.get(@options)
     end
     it "should request and parse a call to the BIT artists - get API method using api_name" do
-      Bandsintown::Artist.should_receive(:request_and_parse).with(@artist.api_name).and_return('json')
+      Bandsintown::Artist.should_receive(:request_and_parse).with(:get, @artist.api_name).and_return('json')
       Bandsintown::Artist.get(@options)
     end
     it "should return the result of Bandsintown::Artist.build_from_json with the response data" do

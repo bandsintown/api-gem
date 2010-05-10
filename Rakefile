@@ -9,7 +9,8 @@ $hoe = Hoe.new('bandsintown', Bandsintown::VERSION) do |p|
   p.rubyforge_name       = p.name # TODO this is default value
   p.extra_deps         = [
     ['activesupport','>= 2.0.2'],
-    ['json', '>= 1.1.3']
+    ['json', '>= 1.1.3'],
+    ['rest_client', '>= 1.5.0']
   ]
   p.extra_dev_deps = [
     ['newgem', ">= #{::Newgem::VERSION}"]

@@ -3,8 +3,12 @@ module Bandsintown
   
     attr_accessor :bandsintown_url
     
-    def self.request(api_method, args={})
-      self.connection.request(self.resource_path, api_method, args)
+    def self.request(http_method, api_method, args={})
+      case http_method
+      when :get  then self.connection.get(self.resource_path, api_method, args)
+      when :post then self.connection.post(self.resource_path, api_method, args)
+      else raise ArgumentError, "only :get and :post requests are supported"
+      end
     end
   
     def self.connection
@@ -23,8 +27,8 @@ module Bandsintown
       end
     end
     
-    def self.request_and_parse(api_method, args={})
-      parse(request(api_method, args))
+    def self.request_and_parse(http_method, api_method, args={})
+      parse(request(http_method, api_method, args))
     end
   
   end
