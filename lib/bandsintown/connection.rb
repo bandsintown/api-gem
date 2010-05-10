@@ -6,10 +6,19 @@ module Bandsintown
       @base_url = base_url
     end
     
-    def get(resource_path, method_path, args = {})
-      request_url = "#{@base_url}/#{resource_path}/#{method_path}?#{encode(args.symbolize_keys).to_param}"
+    def get(resource_path, method_path, params = {})
+      request_url = "#{@base_url}/#{resource_path}/#{method_path}?#{encode(params.symbolize_keys)}"
       begin
         RestClient.get(request_url)
+      rescue RestClient::ResourceNotFound => error_response
+        error_response.response
+      end
+    end
+    
+    def post(resource_path, method_path, body = {})
+      request_url = "#{@base_url}/#{resource_path}/#{method_path}?#{encode({})}"
+      begin
+        RestClient.post(request_url, body.to_json, :content_type => :json, :accept => :json)
       rescue RestClient::ResourceNotFound => error_response
         error_response.response
       end
@@ -27,7 +36,7 @@ module Bandsintown
       end
       args[:format] = "json"
       args[:app_id] = Bandsintown.app_id
-      args
+      args.to_param
     end
     
   end
