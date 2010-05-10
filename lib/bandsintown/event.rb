@@ -1,6 +1,54 @@
 module Bandsintown
   class Event < Base
     
+    module CreationHelpers
+      ISO_8601_FORMAT = "%Y-%m-%dT%H:%M:%S"
+      
+      def self.included(klass)
+        klass.extend(ClassMethods)
+      end
+      
+      module ClassMethods
+        def parse_datetime(datetime)
+          case datetime
+          when Time then datetime.strftime(ISO_8601_FORMAT)
+          when Date then (datetime + 19.hours).strftime(ISO_8601_FORMAT)
+          else datetime
+          end
+        end
+        
+        def parse_venue(venue_data)
+          hash = venue_data.to_hash
+          venue = if hash[:bandsintown_id].blank?
+            {
+              :name => hash[:name], 
+              :city => hash[:city], 
+              :region => hash[:region],
+              :country => hash[:country], 
+              :latitude => hash[:latitude],
+              :longitude => hash[:longitude]
+            }
+          else
+            { :id => hash[:bandsintown_id] }
+          end
+          venue.reject { |k,v| v.blank? }
+        end
+        
+        def parse_artists(artist_data)
+          artist_data.map do |artist|
+            if artist.is_a?(String)
+              { :name => artist }
+            else
+              hash = artist.to_hash
+              hash[:mbid].blank? ? { :name => hash[:name] } : { :mbid => hash[:mbid] }
+            end
+          end          
+        end
+      end
+    end
+    
+    include CreationHelpers
+    
     attr_accessor :bandsintown_id, :datetime, :ticket_url, :artists, :venue, :status, :ticket_status, :on_sale_datetime
     
     def tickets_available?
@@ -100,6 +148,25 @@ module Bandsintown
       events
     end
     
+    def self.create(options = {})
+      event_data = {
+        :artists          => self.parse_artists(options[:artists]),
+        :venue            => self.parse_venue(options[:venue]),
+        :datetime         => self.parse_datetime(options[:datetime]),
+        :on_sale_datetime => self.parse_datetime(options[:on_sale_datetime]),
+        :ticket_url       => options[:ticket_url],
+        :ticket_price     => options[:ticket_price]
+      }.reject { |k,v| v.blank? }
+      
+      response = self.request_and_parse(:post, "create", :event => event_data)
+      
+      if response.key?("message")
+        response['message']
+      else
+        Bandsintown::Event.build_from_json(response['event'])
+      end
+    end
+    
     def self.resource_path
       "events"
     end
@@ -117,6 +184,7 @@ module Bandsintown
         event.artists          = json_hash["artists"].map { |artist| Bandsintown::Artist.new(artist.symbolize_keys) }
       end
     end
+
     
   end
 end

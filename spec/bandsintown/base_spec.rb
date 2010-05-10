@@ -83,4 +83,15 @@ describe Bandsintown::Base do
     end
   end
   
+  
+  describe "#to_hash" do
+    it "should return a hash from non-blank instance variables" do
+      class Bandsintown::TestObject < Bandsintown::Base; attr_accessor :one, :two, :three; end
+      test_object = Bandsintown::TestObject.new
+      test_object.one = '1'
+      test_object.two = 2
+      test_object.three = ''
+      test_object.to_hash.should == { :one => '1', :two => 2 }
+    end
+  end
 end

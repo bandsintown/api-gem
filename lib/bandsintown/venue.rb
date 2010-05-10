@@ -66,7 +66,6 @@ module Bandsintown
         v.latitude        = args["latitude"]
         v.longitude       = args["longitude"]
       end
-    end
-    
+    end    
   end
 end
