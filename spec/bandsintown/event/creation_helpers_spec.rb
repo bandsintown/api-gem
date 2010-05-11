@@ -15,6 +15,11 @@ describe Bandsintown::Event::CreationHelpers do
       expected = "2010-06-01T20:30:00"
       Bandsintown::ExtendedClass.parse_datetime(datetime).should == expected
     end
+    it "should return datetime formatted to ISO 8601 if given a DateTime object" do
+      datetime = DateTime.parse("2010-06-01 20:30")
+      expected = "2010-06-01T20:30:00"
+      Bandsintown::ExtendedClass.parse_datetime(datetime).should == expected
+    end
     it "should return datetime formatted to ISO 8601 at 19:00 if given a Date object" do
       datetime = Date.parse("2010-06-01")
       expected = "2010-06-01T19:00:00"

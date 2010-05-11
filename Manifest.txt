@@ -15,6 +15,7 @@ script/txt2html
 spec/bandsintown/artist_spec.rb
 spec/bandsintown/base_spec.rb
 spec/bandsintown/connection_spec.rb
+spec/bandsintown/event/creation_helpers_spec.rb
 spec/bandsintown/event_spec.rb
 spec/bandsintown/venue_spec.rb
 spec/bandsintown_spec.rb

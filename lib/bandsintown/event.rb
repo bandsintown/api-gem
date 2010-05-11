@@ -11,7 +11,7 @@ module Bandsintown
       module ClassMethods
         def parse_datetime(datetime)
           case datetime
-          when Time then datetime.strftime(ISO_8601_FORMAT)
+          when Time, DateTime then datetime.strftime(ISO_8601_FORMAT)
           when Date then (datetime + 19.hours).strftime(ISO_8601_FORMAT)
           else datetime
           end
@@ -19,7 +19,8 @@ module Bandsintown
         
         def parse_venue(venue_data)
           hash = venue_data.to_hash
-          venue = if hash[:bandsintown_id].blank?
+          bandsintown_id = hash[:id] || hash[:bandsintown_id]
+          venue = if bandsintown_id.blank?
             {
               :name => hash[:name], 
               :city => hash[:city], 
@@ -29,7 +30,7 @@ module Bandsintown
               :longitude => hash[:longitude]
             }
           else
-            { :id => hash[:bandsintown_id] }
+            { :id => bandsintown_id }
           end
           venue.reject { |k,v| v.blank? }
         end
@@ -148,6 +149,43 @@ module Bandsintown
       events
     end
     
+    # TODO: better documentation for this method
+    #Allows you to submit events to Bandsintown.  If submitted successfully, a message will be returned: "Event submitted successfully (pending approval)".  
+    #Once the event has been approved by Bandsintown it will appear in API requests and on www.bandsintown.com.
+    #If your app_id has been approved as a trusted source, the event is automatically added to bandsintown and this method
+    #will return a fully populated Bandsintown::Event object.
+    #See http://www.bandsintown.com/api/requests#events-create for more information.
+    #===options:
+    #   :artists - an Array of artist data with each element in one of the following formats:
+    #     * artist name String
+    #     * Hash of { :name => artist name } or { :mbid => music brainz id }
+    #     * Bandsintown::Artist object with :mbid or :name
+    #   :datetime - use one of the following formats:
+    #     * String in ISO-8601 format: '2010-06-01T19:30:00'
+    #     * Any object that responds to strftime (Date/Time/DateTime)
+    #   :venue - use one of the following formats:
+    #     * Hash of { :id => bandsintown id } or location data (:name, :city, :region, :country, :latitude, :longitude)
+    #       * :name, :city, :region, :country are required for venues in the United States
+    #       * :name, :city, :country are required for venues outside the United States
+    #       * :latitude and :longitude are always optional
+    #     * Bandsintown::Venue object
+    #   :on_sale_datetime - use the same formats as :datetime
+    #   :ticket_url - string with a link to where you can buy tickets to the event
+    #   :ticket_price - a number or string with ticket price
+    #
+    #===notes:
+    #   * :artists, :datetime, and :venue are required, all other options are optional.
+    #   * If :mbid and :name are available in an artist Hash or Bandsintown::Artist, :mbid is used first.
+    #   * If :bandsintown_id and location data are given in a venue Hash or Bandsintown::Venue, :bandsintown_id is used first.
+    #
+    #===examples:
+    #Create an event for Evidence and Alchemist at House of Blues - San Diego on June 1st, 2010 using Bandsintown::Artist and Bandsintown::Venue:
+    #   evidence = Bandsintown::Artist.new(:name => "Evidence")
+    #   alchemist = Bandsintown::Artist.new(:name => "Alchemist")
+    #   venue = Bandsintown::Venue.new(727861) # id for House of Blues - San Diego
+    #   Bandsintown::Event.create(:artists => [evidence, alchemist], :venue => venue, :datetime => "2010-06-01T19:30:00")
+    #   # => "Event submitted successfully (pending approval)"
+    #
     def self.create(options = {})
       event_data = {
         :artists          => self.parse_artists(options[:artists]),
@@ -161,9 +199,9 @@ module Bandsintown
       response = self.request_and_parse(:post, "create", :event => event_data)
       
       if response.key?("message")
-        response['message']
+        response["message"]
       else
-        Bandsintown::Event.build_from_json(response['event'])
+        Bandsintown::Event.build_from_json(response["event"])
       end
     end
     

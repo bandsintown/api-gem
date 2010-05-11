@@ -1,7 +1,7 @@
 module Bandsintown
   class Artist < Base
     
-    attr_accessor :name, :bandsintown_url, :mbid, :events, :upcoming_events_count
+    attr_accessor :name, :mbid, :events, :upcoming_events_count
     
     def initialize(options = {})
       @name = options[:name]
