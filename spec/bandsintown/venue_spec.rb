@@ -18,6 +18,10 @@ describe Bandsintown::Venue do
       @venue.should respond_to(:bandsintown_url)
       @venue.should respond_to(:bandsintown_url=)
     end
+    it "should have an accessor for @address" do
+      @venue.should respond_to(:address)
+      @venue.should respond_to(:address=)
+    end
     it "should have an accessor for @city" do
       @venue.should respond_to(:city)
       @venue.should respond_to(:city=)
@@ -25,6 +29,10 @@ describe Bandsintown::Venue do
     it "should have an accessor for @region" do
       @venue.should respond_to(:region)
       @venue.should respond_to(:region=)
+    end
+    it "should have an accessor for @postalcode" do
+      @venue.should respond_to(:postalcode)
+      @venue.should respond_to(:postalcode=)
     end
     it "should have an accessor for @country" do
       @venue.should respond_to(:country)

@@ -146,6 +146,39 @@ venue = Bandsintown::Venue.new(1700)
 events = venue.events
 </pre>
 
+h3. Create an event on bandsintown.com using Bandsintown::Artist and Bandsintown::Venue objects
+
+<pre syntax="ruby">
+# 1700 => Bandsintown venue ID for Paradise Rock Club in Boston, MA
+Bandsintown::Event.create({
+  :artists => [Bandsintown::Artist.new(:name => "The Roots")],
+  :datetime => Time.parse("2010-06-01 20:00"),
+  :venue => Bandsintown::Venue.new(1700),
+  :ticket_url => "http://www.example.com/tickets/123"
+  :ticket_price => 19.5,
+  :on_sale_datetime => Time.parse("2010-05-01 12:00")
+})
+</pre>
+
+h3. Create an event on bandsintown.com using artist names and venue location hash
+
+<pre syntax="ruby">
+# 1700 => Bandsintown venue ID for Paradise Rock Club in Boston, MA
+Bandsintown::Event.create({
+  :artists => ["Evidence", "Alchemist"],
+  :datetime => "2010-06-01T19:30:00",
+  :venue => { 
+    :name => "Paradise Rock Club",
+    :city => "Boston",
+    :region => "MA",
+    :country => "United States"
+  },
+  :ticket_url => "http://www.example.com/tickets/123"
+  :ticket_price => 15,
+  :on_sale_datetime => "2010-05-01T19:30:00"
+})
+</pre>
+
 h2. Source
 
 <pre>git clone git://github.com/bandsintown/bandsintown.git</pre>

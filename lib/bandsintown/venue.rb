@@ -1,7 +1,9 @@
 module Bandsintown
   class Venue < Base
+    attr_accessor :name, :bandsintown_id, :city, :region, :country, :latitude, :longitude, :events
     
-    attr_accessor :name, :bandsintown_id, :region, :city, :country, :latitude, :longitude, :events
+    #Note - address and postalcode are not returned in API responses, but they are accepted when passing venue data to Bandsintown::Event.create.
+    attr_accessor :address, :postalcode
         
     def initialize(bandsintown_id)
       @bandsintown_id = bandsintown_id

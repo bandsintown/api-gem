@@ -32,8 +32,10 @@ describe Bandsintown::Event::CreationHelpers do
       before(:each) do
         @venue_data = { 
           :name => "Paradise", 
+          :address => "967 Commonwealth Ave",
           :city => "Boston", 
           :region => "MA", 
+          :postalcode => "02215",
           :country => "United States", 
           :latitude => '',
           :longitude => ''
@@ -42,8 +44,10 @@ describe Bandsintown::Event::CreationHelpers do
       it "should return a hash with non-blank location data if venue_data is given as a hash without bandsintown id" do
         Bandsintown::ExtendedClass.parse_venue(@venue_data).should == {
           :name => "Paradise", 
+          :address => "967 Commonwealth Ave",
           :city => "Boston", 
           :region => "MA", 
+          :postalcode => "02215",
           :country => "United States"
         }
       end
@@ -56,6 +60,7 @@ describe Bandsintown::Event::CreationHelpers do
       before(:each) do
         @venue = Bandsintown::Venue.new(1700)
         @venue.name = "Paradise"
+        @venue.address = "967 Commonwealth Ave"
         @venue.city = "Boston"
         @venue.region = "MA"
         @venue.country = "United States"
@@ -64,6 +69,7 @@ describe Bandsintown::Event::CreationHelpers do
         @venue.bandsintown_id = ''
         Bandsintown::ExtendedClass.parse_venue(@venue).should == {
           :name => "Paradise", 
+          :address => "967 Commonwealth Ave",
           :city => "Boston", 
           :region => "MA", 
           :country => "United States"

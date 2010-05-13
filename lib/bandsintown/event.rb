@@ -1,6 +1,7 @@
 module Bandsintown
   class Event < Base
     
+    # Module with helper methods for formatting Bandsintown::Event.create params
     module CreationHelpers
       ISO_8601_FORMAT = "%Y-%m-%dT%H:%M:%S"
       
@@ -9,6 +10,7 @@ module Bandsintown
       end
       
       module ClassMethods
+        # Formats Time/DateTime/Date to ISO 8601 string, or return unmodified if passed as a String.
         def parse_datetime(datetime)
           case datetime
           when Time, DateTime then datetime.strftime(ISO_8601_FORMAT)
@@ -17,14 +19,18 @@ module Bandsintown
           end
         end
         
+        # Returns a hash with venue attributes.  If bandsintown_id is present this is preferred over location attributes.
+        # venue_data can be either a Bandsintown::Venue or a Hash.
         def parse_venue(venue_data)
           hash = venue_data.to_hash
           bandsintown_id = hash[:id] || hash[:bandsintown_id]
           venue = if bandsintown_id.blank?
             {
               :name => hash[:name], 
+              :address => hash[:address],
               :city => hash[:city], 
               :region => hash[:region],
+              :postalcode => hash[:postalcode],
               :country => hash[:country], 
               :latitude => hash[:latitude],
               :longitude => hash[:longitude]
@@ -35,6 +41,7 @@ module Bandsintown
           venue.reject { |k,v| v.blank? }
         end
         
+        # Returns an array of hashes formatted either { :name => name } or { :mbid => mbid } based on each object in artist_data (can be Bandsintown::Artists, Hashes, or Strings)
         def parse_artists(artist_data)
           artist_data.map do |artist|
             if artist.is_a?(String)
@@ -149,11 +156,9 @@ module Bandsintown
       events
     end
     
-    # TODO: better documentation for this method
-    #Allows you to submit events to Bandsintown.  If submitted successfully, a message will be returned: "Event submitted successfully (pending approval)".  
-    #Once the event has been approved by Bandsintown it will appear in API requests and on www.bandsintown.com.
-    #If your app_id has been approved as a trusted source, the event is automatically added to bandsintown and this method
-    #will return a fully populated Bandsintown::Event object.
+    #This is used to create an event on bandsintown.com.
+    #Unless you have a trusted app_id, events added through the API will need to be approved before they are seen live. 
+    #Contact Bandsintown if you are often adding events and would like a trusted account.
     #See http://www.bandsintown.com/api/requests#events-create for more information.
     #===options:
     #   :artists - an Array of artist data with each element in one of the following formats:
@@ -164,10 +169,10 @@ module Bandsintown
     #     * String in ISO-8601 format: '2010-06-01T19:30:00'
     #     * Any object that responds to strftime (Date/Time/DateTime)
     #   :venue - use one of the following formats:
-    #     * Hash of { :id => bandsintown id } or location data (:name, :city, :region, :country, :latitude, :longitude)
+    #     * Hash of { :id => bandsintown id } or location data (:name, :address, :city, :region, :postalcode, :country, :latitude, :longitude)
     #       * :name, :city, :region, :country are required for venues in the United States
     #       * :name, :city, :country are required for venues outside the United States
-    #       * :latitude and :longitude are always optional
+    #       * :latitude, :longitude, :address, and :postalcode are optional
     #     * Bandsintown::Venue object
     #   :on_sale_datetime - use the same formats as :datetime
     #   :ticket_url - string with a link to where you can buy tickets to the event
@@ -177,14 +182,24 @@ module Bandsintown
     #   * :artists, :datetime, and :venue are required, all other options are optional.
     #   * If :mbid and :name are available in an artist Hash or Bandsintown::Artist, :mbid is used first.
     #   * If :bandsintown_id and location data are given in a venue Hash or Bandsintown::Venue, :bandsintown_id is used first.
-    #
+    #   * If you have a trusted app_id, this method will return a populated Bandsintown::Event object.
+    # 
     #===examples:
-    #Create an event for Evidence and Alchemist at House of Blues - San Diego on June 1st, 2010 using Bandsintown::Artist and Bandsintown::Venue:
+    #Create an event for Evidence and Alchemist at House of Blues - San Diego on June 1st, 2010 using Bandsintown::Artists and Bandsintown::Venue:
     #   evidence = Bandsintown::Artist.new(:name => "Evidence")
     #   alchemist = Bandsintown::Artist.new(:name => "Alchemist")
     #   venue = Bandsintown::Venue.new(727861) # id for House of Blues - San Diego
     #   Bandsintown::Event.create(:artists => [evidence, alchemist], :venue => venue, :datetime => "2010-06-01T19:30:00")
-    #   # => "Event submitted successfully (pending approval)"
+    #   => "Event submitted successfully (pending approval)"
+    #
+    #Create an event for The Roots at Paradise Rock Club in Boston on June 1st, 2010 using artist name, venue location data, including full ticketing and price data:
+    #   paradise = { :name => "Paradise Rock Club", :address => "967 Commonwealth Ave", :city => "Boston", :region => "MA", :country => "United States" }
+    #   Bandsintown::Event.create(:artists => ["The Roots"], :venue => paradise, :datetime => Time.parse("2010-06-01 20:00"), :on_sale_datetime => Time.parse("2010-05-01 12:00"), :ticket_url => "http://www.example.com/tickets/123", :ticket_price => 19.5)
+    #   => "Event submitted successfully (pending approval)"
+    #
+    #Create an event with a trusted app_id
+    #   Bandsintown::Event.create(:artists => ["The Roots"], :datetime => Date.today, :venue => { :id => 123 })
+    #   => Bandsintown::Event with populated attributes
     #
     def self.create(options = {})
       event_data = {

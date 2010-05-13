@@ -12,7 +12,7 @@ module Bandsintown
     end
   
     def self.connection
-      @connection ||= Bandsintown::Connection.new("http://localhost:3000/api") #Bandsintown::Connection.new("http://api.bandsintown.com")
+      @connection ||= Bandsintown::Connection.new("http://api.bandsintown.com")
     end
     
     def self.parse(response)
