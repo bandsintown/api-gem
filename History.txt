@@ -1,3 +1,6 @@
+== 0.2.0 2010-06-03
+* Added Events - Create API method (Bandsintown::Event.create)
+
 == 0.1.5 2010-04-06
 * Added Venues - Events API method (Bandsintown::Venue#events)
 * Added Venues - Search API method (Bandsintown::Venues.search)
