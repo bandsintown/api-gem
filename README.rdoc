@@ -127,7 +127,7 @@ For more information visit http://www.bandsintown.com/api/requests.
     :artists => [Bandsintown::Artist.new(:name => "The Roots")],
     :datetime => Time.parse("2010-06-01 20:00"),
     :venue => Bandsintown::Venue.new(1700),
-    :ticket_url => "http://www.example.com/tickets/123"
+    :ticket_url => "http://www.example.com/tickets/123",
     :ticket_price => 19.5,
     :on_sale_datetime => Time.parse("2010-05-01 12:00")
   })
@@ -144,7 +144,7 @@ For more information visit http://www.bandsintown.com/api/requests.
       :region => "MA",
       :country => "United States"
     },
-    :ticket_url => "http://www.example.com/tickets/123"
+    :ticket_url => "http://www.example.com/tickets/123",
     :ticket_price => 15,
     :on_sale_datetime => "2010-05-01T19:30:00"
   })
