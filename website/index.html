@@ -189,6 +189,21 @@
 <span class="ident">event_id</span> <span class="punct">=</span> <span class="ident">events</span><span class="punct">.</span><span class="ident">first</span><span class="punct">.</span><span class="ident">bandsintown_id</span>
 <span class="ident">artist</span><span class="punct">.</span><span class="ident">cancel_event</span><span class="punct">(</span><span class="ident">event_id</span><span class="punct">)</span>
 </pre></p>
+<h3>Create an artist on bandsintown.com with name, music brainz id, myspace url, and website</h3>
+<p><pre class='syntax'>
+<span class="ident">artist</span> <span class="punct">=</span> <span class="constant">Bandsintown</span><span class="punct">::</span><span class="constant">Artist</span><span class="punct">.</span><span class="ident">create</span><span class="punct">({</span>
+  <span class="symbol">:name</span> <span class="punct">=&gt;</span> <span class="punct">&quot;</span><span class="string">A New Artist</span><span class="punct">&quot;,</span>
+  <span class="symbol">:mbid</span> <span class="punct">=&gt;</span> <span class="punct">&quot;</span><span class="string">abcd1234-abcd-1234-abcd-12345678abcd</span><span class="punct">&quot;,</span>
+  <span class="symbol">:myspace_url</span> <span class="punct">=&gt;</span> <span class="punct">&quot;</span><span class="string">http://www.myspace.com/anewartist</span><span class="punct">&quot;,</span>
+  <span class="symbol">:website</span> <span class="punct">=&gt;</span> <span class="punct">&quot;</span><span class="string">http://www.a-new-artist.com</span><span class="punct">&quot;</span>
+<span class="punct">})</span>
+</pre></p>
+<h3>Create an artist on bandsintown.com with name only (all other parameters optional)</h3>
+<p><pre class='syntax'>
+<span class="ident">artist</span> <span class="punct">=</span> <span class="constant">Bandsintown</span><span class="punct">::</span><span class="constant">Artist</span><span class="punct">.</span><span class="ident">create</span><span class="punct">({</span>
+  <span class="symbol">:name</span> <span class="punct">=&gt;</span> <span class="punct">&quot;</span><span class="string">A New Artist</span><span class="punct">&quot;</span>
+<span class="punct">})</span>
+</pre></p>
 <h2>Source</h2>
 <pre>git clone git://github.com/bandsintown/bandsintown.git</pre>
 <h2>Links</h2>

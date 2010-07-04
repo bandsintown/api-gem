@@ -196,6 +196,25 @@ event_id = events.first.bandsintown_id
 artist.cancel_event(event_id)
 </pre>
 
+h3. Create an artist on bandsintown.com with name, music brainz id, myspace url, and website
+
+<pre syntax="ruby">
+artist = Bandsintown::Artist.create({
+  :name => "A New Artist",
+  :mbid => "abcd1234-abcd-1234-abcd-12345678abcd",
+  :myspace_url => "http://www.myspace.com/anewartist",
+  :website => "http://www.a-new-artist.com"
+})
+</pre>
+
+h3. Create an artist on bandsintown.com with name only (all other parameters optional)
+
+<pre syntax="ruby">
+artist = Bandsintown::Artist.create({
+  :name => "A New Artist"
+})
+</pre>
+
 h2. Source
 
 <pre>git clone git://github.com/bandsintown/bandsintown.git</pre>

@@ -163,6 +163,21 @@ For more information visit http://www.bandsintown.com/api/requests.
   event_id = events.first.bandsintown_id
   artist.cancel_event(event_id)
 
+=== Create an artist on bandsintown.com with name, music brainz id, myspace url, and website
+  
+  artist = Bandsintown::Artist.create({
+    :name => "A New Artist",
+    :mbid => "abcd1234-abcd-1234-abcd-12345678abcd",
+    :myspace_url => "http://www.myspace.com/anewartist",
+    :website => "http://www.a-new-artist.com"
+  })
+
+=== Create an artist on bandsintown.com with name only (all other parameters optional)
+
+  artist = Bandsintown::Artist.create({
+    :name => "A New Artist"
+  })
+
 == Links
 
 * RDoc[http://bandsintown.rubyforge.org/rdoc]

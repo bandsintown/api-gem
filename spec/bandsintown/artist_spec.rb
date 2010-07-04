@@ -236,4 +236,27 @@ describe Bandsintown::Artist do
       @artist.cancel_event(@event_id).should == @response["message"]
     end
   end
+
+  describe ".create(options = {})" do
+    before(:each) do
+      @options = { 
+        :name => "A New Artist", 
+        :myspace_url => "http://www.myspace.com/a_new_artist", 
+        :mbid => "abcd1234-abcd-1234-5678-abcd12345678",
+        :website => "http://www.a-new-artist.com"
+      }
+      Bandsintown::Artist.stub!(:request_and_parse).and_return('json')
+      Bandsintown::Artist.stub!(:build_from_json).and_return('built artist')
+    end
+    it "should request and parse a call to the BIT artists - create API method using the supplied artist data" do
+      expected_params = { :artist => @options }
+      Bandsintown::Artist.should_receive(:request_and_parse).with(:post, "", expected_params).and_return('json')
+      Bandsintown::Artist.create(@options)
+    end
+    it "should return the result of Bandsintown::Artist.build_from_json with the response data" do
+      Bandsintown::Artist.should_receive(:build_from_json).with('json').and_return('built artist')
+      Bandsintown::Artist.create(@options).should == 'built artist'
+    end
+  end
+  
 end

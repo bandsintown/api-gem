@@ -57,11 +57,38 @@ module Bandsintown
       (@upcoming_events_count || @events.size) > 0
     end
     
+    #This method is used to create an artist on bandsintown.com.
+    #If successful, it will return a Bandsintown::Artist object with the same data as a Bandsintown::Artist.get response.
+    #If you attempt to create an artist that already exists, the existing artist will be returned.
+    #See http://www.bandsintown.com/api/requests#artists-create for more information.
+    #
+    #====options
+    # * :name - artist name
+    # * :mbid - music brainz id
+    # * :myspace_url - url
+    # * :website - url
+    #
+    #====notes
+    # * :name is required, all other arguments are optional.
+    # * :mbid is uuid format, for example : "abcd1234-abcd-1234-abcd-12345678abcd"
+    # * :myspace_url must be from either myspace.com or www.myspace.com 
+    #
+    #====examples
+    #Create an artist with full data:
+    #   Bandsintown::Artist.create(:name => "A New Artist", :mbid => "abcd1234-abcd-1234-abcd-12345678abcd", :myspace_url => "http://www.myspace.com/anewartist", :website => "http://www.a-new-artist.com")
+    #
+    #Create an artist with name only:
+    #   Bandsintown::Artist.create(:name => "A New Artist")
+    #
+    def self.create(options)
+      build_from_json(self.request_and_parse(:post, "", :artist => options))
+    end
+    
     #This is used to cancel an event on Bandsintown for a single artist.  If you want to cancel the entire event (all artists), use Bandsintown::Event#cancel.
     #If successful, this method will always return a status message.
     #Unless you have a trusted app_id, events added or removed through the API will need to be approved before the changes are seen live.
     #Contact Bandsintown if you are often adding events and would like a trusted account.
-    #See http://www.bandsintown.com/api/requests#events-cancel for more information.
+    #See http://www.bandsintown.com/api/requests#artists-cancel-event for more information.
     #
     #====examples:
     #Cancel an artist's event with a non-trusted app_id:
