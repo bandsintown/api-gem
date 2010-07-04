@@ -149,6 +149,20 @@ For more information visit http://www.bandsintown.com/api/requests.
     :on_sale_datetime => "2010-05-01T19:30:00"
   })
 
+=== Cancel an event on bandsintown.com 
+
+  events = Bandsintown::Event.search(:location => "San Diego, CA")
+  event = events.first
+  event.cancel
+  
+
+=== Cancel an event on bandsintown.com for a single artist
+
+  artist = Bandsintown::Artist.new(:name => "Diamond District")
+  events = artist.events
+  event_id = events.first.bandsintown_id
+  artist.cancel_event(event_id)
+
 == Links
 
 * RDoc[http://bandsintown.rubyforge.org/rdoc]

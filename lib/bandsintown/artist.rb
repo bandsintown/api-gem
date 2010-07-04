@@ -57,6 +57,31 @@ module Bandsintown
       (@upcoming_events_count || @events.size) > 0
     end
     
+    #This is used to cancel an event on Bandsintown for a single artist.  If you want to cancel the entire event (all artists), use Bandsintown::Event#cancel.
+    #If successful, this method will always return a status message.
+    #Unless you have a trusted app_id, events added or removed through the API will need to be approved before the changes are seen live.
+    #Contact Bandsintown if you are often adding events and would like a trusted account.
+    #See http://www.bandsintown.com/api/requests#events-cancel for more information.
+    #
+    #====examples:
+    #Cancel an artist's event with a non-trusted app_id:
+    #   artist = Bandsintown::Artist.new(:name => "Little Brother")
+    #   event_id = 12345
+    #   artist.cancel_event(event_id)
+    #   => "Event successfully cancelled (Pending Approval)"
+    #
+    #Cancel an artist's event with a trusted app_id:
+    #   artist = Bandsintown::Artist.new(:name => "Little Brother")
+    #   event_id = 12345
+    #   artist.cancel_event(event_id)
+    #   => "Event successfully cancelled"
+    #
+    def cancel_event(event_id)
+      raise StandardError.new("event cancellation requires a bandsintown_id") if event_id.blank?
+      response = self.class.request_and_parse(:post, "#{api_name}/events/#{event_id}/cancel")
+      response["message"]
+    end
+    
     #Returns a Bandsintown::Artist object with basic information for a single artist, including the number of upcoming events. 
     #Useful in determining if an artist is on tour without requesting the event data.
     #See http://www.bandsintown.com/api/requests#artists-get for more information.

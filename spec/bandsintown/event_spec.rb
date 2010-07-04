@@ -243,4 +243,24 @@ describe Bandsintown::Event do
       end
     end
   end
+
+  describe "#cancel" do
+    before(:each) do
+      @event = Bandsintown::Event.new
+      @event.bandsintown_id = 12345
+      @response = { "message" => "Event successfully cancelled (pending approval)" }
+      Bandsintown::Event.stub!(:request_and_parse).and_return(@response)
+    end
+    it "should raise an error if the event does not have a bandsintown_id" do
+      @event.bandsintown_id = nil
+      lambda { @event.cancel }.should raise_error(StandardError, "event cancellation requires a bandsintown_id")
+    end
+    it "should request and parse a call to the BIT events - cancel API method using the event's bandsintown_id" do
+      Bandsintown::Event.should_receive(:request_and_parse).with(:post, "#{@event.bandsintown_id}/cancel").and_return(@response)
+      @event.cancel
+    end
+    it "should return the response message if an event was successfully cancelled" do
+      @event.cancel.should == @response["message"]
+    end
+  end
 end

@@ -220,4 +220,20 @@ describe Bandsintown::Artist do
       end
     end
   end
+
+  describe "#cancel_event(event_id)" do
+    before(:each) do
+      @event_id = 12345
+      @artist = Bandsintown::Artist.new(:name => "Little Brother")
+      @response = { "message" => "Event successfully cancelled (pending approval)" }
+      Bandsintown::Artist.stub!(:request_and_parse).and_return(@response)
+    end
+    it "should request and parse a call to the BIT artists - cancel event API method using the artist's api_name and the given event_id" do
+      Bandsintown::Artist.should_receive(:request_and_parse).with(:post, "#{@artist.api_name}/events/#{@event_id}/cancel").and_return(@response)
+      @artist.cancel_event(@event_id)
+    end
+    it "should return the response message if an event was successfully cancelled" do
+      @artist.cancel_event(@event_id).should == @response["message"]
+    end
+  end
 end

@@ -176,6 +176,19 @@
   <span class="symbol">:on_sale_datetime</span> <span class="punct">=&gt;</span> <span class="punct">&quot;</span><span class="string">2010-05-01T19:30:00</span><span class="punct">&quot;</span>
 <span class="punct">})</span>
 </pre></p>
+<h3>Cancel an event on bandsintown.com</h3>
+<p><pre class='syntax'>
+<span class="ident">events</span> <span class="punct">=</span> <span class="constant">Bandsintown</span><span class="punct">::</span><span class="constant">Event</span><span class="punct">.</span><span class="ident">search</span><span class="punct">(</span><span class="symbol">:location</span> <span class="punct">=&gt;</span> <span class="punct">&quot;</span><span class="string">San Diego, CA</span><span class="punct">&quot;)</span>
+<span class="ident">event</span> <span class="punct">=</span> <span class="ident">events</span><span class="punct">.</span><span class="ident">first</span>
+<span class="ident">event</span><span class="punct">.</span><span class="ident">cancel</span>
+</pre></p>
+<h3>Cancel an event on bandsintown.com for a single artist</h3>
+<p><pre class='syntax'>
+<span class="ident">artist</span> <span class="punct">=</span> <span class="constant">Bandsintown</span><span class="punct">::</span><span class="constant">Artist</span><span class="punct">.</span><span class="ident">new</span><span class="punct">(</span><span class="symbol">:name</span> <span class="punct">=&gt;</span> <span class="punct">&quot;</span><span class="string">Diamond District</span><span class="punct">&quot;)</span>
+<span class="ident">events</span> <span class="punct">=</span> <span class="ident">artist</span><span class="punct">.</span><span class="ident">events</span>
+<span class="ident">event_id</span> <span class="punct">=</span> <span class="ident">events</span><span class="punct">.</span><span class="ident">first</span><span class="punct">.</span><span class="ident">bandsintown_id</span>
+<span class="ident">artist</span><span class="punct">.</span><span class="ident">cancel_event</span><span class="punct">(</span><span class="ident">event_id</span><span class="punct">)</span>
+</pre></p>
 <h2>Source</h2>
 <pre>git clone git://github.com/bandsintown/bandsintown.git</pre>
 <h2>Links</h2>

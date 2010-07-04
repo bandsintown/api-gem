@@ -6,8 +6,11 @@ describe Bandsintown::Base do
     it "should be an instance of Bandsintown::Connection" do
       Bandsintown::Base.connection.class.should == Bandsintown::Connection
     end
-    it "should be cached" do
+    it "should be memoized" do
       Bandsintown::Base.connection.should === Bandsintown::Base.connection
+    end
+    it "should use http://api.bandsintown.com as the base url" do
+      Bandsintown::Base.connection.base_url.should == "http://api.bandsintown.com"
     end
   end
   

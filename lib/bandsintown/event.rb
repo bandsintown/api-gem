@@ -157,7 +157,7 @@ module Bandsintown
     end
     
     #This is used to create an event on bandsintown.com.
-    #Unless you have a trusted app_id, events added through the API will need to be approved before they are seen live. 
+    #Unless you have a trusted app_id, events added or removed through the API will need to be approved before the changes are seen live. 
     #Contact Bandsintown if you are often adding events and would like a trusted account.
     #See http://www.bandsintown.com/api/requests#events-create for more information.
     #===options:
@@ -218,6 +218,31 @@ module Bandsintown
       else
         Bandsintown::Event.build_from_json(response["event"])
       end
+    end
+    
+    #This is used to cancel an event on Bandsintown.  If you want to remove a single artist from an event, use Bandsintown::Artist#cancel_event instead.
+    #If successful, this method will always return a status message.
+    #Unless you have a trusted app_id, events added or removed through the API will need to be approved before the changes are seen live.
+    #Contact Bandsintown if you are often adding events and would like a trusted account.
+    #See http://www.bandsintown.com/api/requests#events-cancel for more information.
+    #
+    #====examples:
+    #Cancel an event with a non-trusted app_id:
+    #   events = Bandsintown::Event.search(:location => "San Diego, CA")
+    #   event = events.first
+    #   event.cancel
+    #   => "Event successfully cancelled (Pending Approval)"
+    #
+    #Cancel an event with a trusted app_id:
+    #   events = Bandsintown::Event.search(:location => "San Diego, CA")
+    #   event = events.first
+    #   event.cancel
+    #   => "Event successfully cancelled"
+    #
+    def cancel
+      raise StandardError.new("event cancellation requires a bandsintown_id") if @bandsintown_id.blank?
+      response = self.class.request_and_parse(:post, "#{@bandsintown_id}/cancel")
+      response["message"]
     end
     
     def self.resource_path

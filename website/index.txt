@@ -179,6 +179,23 @@ Bandsintown::Event.create({
 })
 </pre>
 
+h3. Cancel an event on bandsintown.com 
+
+<pre syntax="ruby">
+events = Bandsintown::Event.search(:location => "San Diego, CA")
+event = events.first
+event.cancel
+</pre>
+
+h3. Cancel an event on bandsintown.com for a single artist
+
+<pre syntax="ruby">
+artist = Bandsintown::Artist.new(:name => "Diamond District")
+events = artist.events
+event_id = events.first.bandsintown_id
+artist.cancel_event(event_id)
+</pre>
+
 h2. Source
 
 <pre>git clone git://github.com/bandsintown/bandsintown.git</pre>
