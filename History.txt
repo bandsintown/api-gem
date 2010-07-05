@@ -1,3 +1,6 @@
+== 0.3.1 2010-07-05
+* Fixed bug for API methods with a blank method name in the route (events - create and artists - create), "/artists/" => "/artists"
+
 == 0.3.0 2010-07-04
 * Added Events - Cancel API method (Bandsintown::Event#cancel)
 * Added Artists - Cancel Event API method (Bandsintown::Artist#cancel_event)
