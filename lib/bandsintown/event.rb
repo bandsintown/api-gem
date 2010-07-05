@@ -211,7 +211,7 @@ module Bandsintown
         :ticket_price     => options[:ticket_price]
       }.reject { |k,v| v.blank? }
       
-      response = self.request_and_parse(:post, "create", :event => event_data)
+      response = self.request_and_parse(:post, "", :event => event_data)
       
       if response.key?("message")
         response["message"]

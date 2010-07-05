@@ -7,7 +7,7 @@ module Bandsintown
     end
     
     def get(resource_path, method_path, params = {})
-      request_url = "#{@base_url}/#{resource_path}/#{method_path}?#{encode(params.symbolize_keys)}"
+      request_url = File.join([@base_url, resource_path, method_path].reject(&:blank?)) + "?" + encode(params.symbolize_keys)
       begin
         RestClient.get(request_url)
       rescue RestClient::ResourceNotFound => error_response
@@ -16,7 +16,7 @@ module Bandsintown
     end
     
     def post(resource_path, method_path, body = {})
-      request_url = "#{@base_url}/#{resource_path}/#{method_path}?#{encode({})}"
+      request_url = File.join([@base_url, resource_path, method_path].reject(&:blank?)) + "?" + encode({})
       begin
         RestClient.post(request_url, body.to_json, :content_type => :json, :accept => :json)
       rescue RestClient::ResourceNotFound => error_response

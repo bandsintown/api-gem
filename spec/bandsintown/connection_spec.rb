@@ -36,37 +36,43 @@ describe Bandsintown::Connection do
       lambda { @connection.get("", "", {}) }.should_not raise_error
       @connection.get("", "", {}).should == "error message"
     end
+    
+    it "should return the correct URL format when method_path is blank (no slashes)" do
+      expected_url = "http://api.bandsintown.com/events?app_id=YOUR_APP_ID&format=json"
+      RestClient.should_receive(:get).with(expected_url).and_return("response")
+      @connection.get("events", "", {})
+    end
   end
   
   describe ".post(resource_path, method_path, body = {})" do
-   before(:each) do
-     @connection = Bandsintown::Connection.new(@base_url)
-     RestClient.stub!(:post).and_return("response")
-     @api_resource = "events"
-     @api_method = "create"
-     @body_params = { 
-       :event => { 
-         :artists => [{ :name => "Little Brother" }],
-         :datetime => "2010-06-01T19:30:00",
-         :venue => { :id => 123 }
-       }
-     }
-   end
-   it "should make a post request to the url constructed with resource path, method path, default encoded params, body converted to json, and application/json request headers" do
-     expected_url = "http://api.bandsintown.com/events/create?app_id=YOUR_APP_ID&format=json"
-     expected_body = @body_params.to_json
-     expected_headers = { :content_type => :json, :accept => :json }
-     @connection.should_receive(:encode).with({}).and_return("app_id=YOUR_APP_ID&format=json")
-     RestClient.should_receive(:post).with(expected_url, expected_body, expected_headers).and_return("response")
-     @connection.post(@api_resource, @api_method, @body_params).should == "response"
-   end
-   
-   it "should return the API error message instead of raising an error if there was a problem with the request (404 response)" do
-     error = RestClient::ResourceNotFound.new; error.response = "error message"
-     RestClient.stub!(:post).and_raise(error)
-     lambda { @connection.post(@api_resource, @api_method, @body_params) }.should_not raise_error
-     @connection.post(@api_resource, @api_method, @body_params).should == "error message"
-   end
+    before(:each) do
+    @connection = Bandsintown::Connection.new(@base_url)
+    RestClient.stub!(:post).and_return("response")
+    @api_resource = "events"
+    @api_method = ""
+    @body_params = { 
+      :event => { 
+        :artists => [{ :name => "Little Brother" }],
+        :datetime => "2010-06-01T19:30:00",
+        :venue => { :id => 123 }
+      }
+    }
+    end
+    it "should make a post request to the url constructed with resource path, method path, default encoded params, body converted to json, and application/json request headers" do
+      expected_url = "http://api.bandsintown.com/events?app_id=YOUR_APP_ID&format=json"
+      expected_body = @body_params.to_json
+      expected_headers = { :content_type => :json, :accept => :json }
+      @connection.should_receive(:encode).with({}).and_return("app_id=YOUR_APP_ID&format=json")
+      RestClient.should_receive(:post).with(expected_url, expected_body, expected_headers).and_return("response")
+      @connection.post(@api_resource, @api_method, @body_params).should == "response"
+    end
+
+    it "should return the API error message instead of raising an error if there was a problem with the request (404 response)" do
+      error = RestClient::ResourceNotFound.new; error.response = "error message"
+      RestClient.stub!(:post).and_raise(error)
+      lambda { @connection.post(@api_resource, @api_method, @body_params) }.should_not raise_error
+      @connection.post(@api_resource, @api_method, @body_params).should == "error message"
+    end
   end
   
   describe ".encode(params={})" do

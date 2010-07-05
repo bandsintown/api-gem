@@ -190,7 +190,7 @@ describe Bandsintown::Event do
       Bandsintown::Event.stub!(:request_and_parse).and_return(@response)
     end
     it "should request and parse a call to the BIT events - create API mehod" do
-      Bandsintown::Event.should_receive(:request_and_parse).with(:post, "create", anything).and_return(@response)
+      Bandsintown::Event.should_receive(:request_and_parse).with(:post, "", anything).and_return(@response)
       Bandsintown::Event.create(@options)
     end
     it "should return the response message if an event was successfully submitted using a non-trusted app_id" do
@@ -214,28 +214,28 @@ describe Bandsintown::Event do
         @options = { :artists => ["Evidence", "Alchemist"] }
         Bandsintown::Event.should_receive(:parse_artists).with(@options[:artists]).and_return('parsed')
         expected_event_params = { :artists => 'parsed' }
-        Bandsintown::Event.should_receive(:request_and_parse).with(:post, "create", :event => hash_including(expected_event_params))
+        Bandsintown::Event.should_receive(:request_and_parse).with(:post, "", :event => hash_including(expected_event_params))
       end
       
       it "should parse the datetime using parse_datetime" do
         @options = { :datetime => "2010-06-01T20:30:00" }
         Bandsintown::Event.should_receive(:parse_datetime).with(@options[:datetime]).and_return('parsed')
         expected_event_params = { :datetime => "parsed" }
-        Bandsintown::Event.should_receive(:request_and_parse).with(:post, "create", :event => hash_including(expected_event_params))
+        Bandsintown::Event.should_receive(:request_and_parse).with(:post, "", :event => hash_including(expected_event_params))
       end
       
       it "should parse the on_sale_datetime using parse_datetime" do
         @options = { :on_sale_datetime => "2010-06-01T20:30:00" }
         Bandsintown::Event.should_receive(:parse_datetime).with(@options[:on_sale_datetime]).and_return('parsed')
         expected_event_params = { :on_sale_datetime => "parsed" }
-        Bandsintown::Event.should_receive(:request_and_parse).with(:post, "create", :event => hash_including(expected_event_params))
+        Bandsintown::Event.should_receive(:request_and_parse).with(:post, "", :event => hash_including(expected_event_params))
       end
       
       it "should parse the venue using parse_venue" do
         @options = { :venue => "data" }
         Bandsintown::Event.should_receive(:parse_venue).with("data").and_return("venue")
         expected_event_params = { :venue => "venue" }
-        Bandsintown::Event.should_receive(:request_and_parse).with(:post, "create", :event => hash_including(expected_event_params))
+        Bandsintown::Event.should_receive(:request_and_parse).with(:post, "", :event => hash_including(expected_event_params))
       end
       
       after(:each) do
