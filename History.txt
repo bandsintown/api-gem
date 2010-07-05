@@ -1,4 +1,4 @@
-== 0.2.1 2010-07-04
+== 0.3.0 2010-07-04
 * Added Events - Cancel API method (Bandsintown::Event#cancel)
 * Added Artists - Cancel Event API method (Bandsintown::Artist#cancel_event)
 * Added Artists - Create API method (Bandsintown::Artist.create)
