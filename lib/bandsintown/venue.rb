@@ -4,7 +4,7 @@ module Bandsintown
     
     #Note - address and postalcode are not returned in API responses, but they are accepted when passing venue data to Bandsintown::Event.create.
     attr_accessor :address, :postalcode
-        
+    
     def initialize(bandsintown_id)
       @bandsintown_id = bandsintown_id
     end 
@@ -52,13 +52,13 @@ module Bandsintown
     def self.search(options = {})
       self.request_and_parse(:get, "search", options).map { |venue_hash| Bandsintown::Venue.build_from_json(venue_hash) }
     end
-
+    
     def self.resource_path
       "venues"
     end
      
     def self.build_from_json(args={})
-      returning Bandsintown::Venue.new(args['id']) do |v|
+      Bandsintown::Venue.new(args['id']).tap do |v|
         v.name            = args["name"]
         v.bandsintown_url = args["url"]
         v.bandsintown_id  = args["id"]
@@ -68,6 +68,6 @@ module Bandsintown
         v.latitude        = args["latitude"]
         v.longitude       = args["longitude"]
       end
-    end    
+    end
   end
 end

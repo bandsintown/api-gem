@@ -250,7 +250,7 @@ module Bandsintown
     end
     
     def self.build_from_json(json_hash)
-      returning Bandsintown::Event.new do |event|
+      Bandsintown::Event.new.tap do |event|
         event.bandsintown_id   = json_hash["id"]
         event.bandsintown_url  = json_hash["url"]
         event.datetime         = Time.parse(json_hash["datetime"])
@@ -262,7 +262,5 @@ module Bandsintown
         event.artists          = json_hash["artists"].map { |artist| Bandsintown::Artist.new(artist.symbolize_keys) }
       end
     end
-
-    
   end
 end
