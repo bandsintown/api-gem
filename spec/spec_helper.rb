@@ -5,7 +5,7 @@ begin
 rescue LoadError
   require 'rubygems'
   gem 'rspec'
-  require 'spec'
+  #require 'spec'
 end
 
 $:.unshift(File.dirname(__FILE__) + '/../lib')

@@ -3,7 +3,7 @@ $:.unshift(File.dirname(__FILE__)) unless
 
 require 'rubygems'
 require 'cgi'
-require 'active_support'
+require 'active_support/all'
 require 'json'
 require 'rest_client'
 
