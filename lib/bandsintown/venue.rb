@@ -58,7 +58,7 @@ module Bandsintown
     end
      
     def self.build_from_json(args={})
-      returning Bandsintown::Venue.new(args['id']) do |v|
+      Bandsintown::Venue.new(args['id']).tap do |v|
         v.name            = args["name"]
         v.bandsintown_url = args["url"]
         v.bandsintown_id  = args["id"]
