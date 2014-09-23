@@ -126,7 +126,7 @@ module Bandsintown
     end
     
     def self.build_from_json(json_hash)
-      returning Bandsintown::Artist.new({}) do |artist|
+      Bandsintown::Artist.new({}).tap do |artist|
         artist.name = json_hash['name']
         artist.mbid = json_hash['mbid']
         artist.bandsintown_url = json_hash['url']
