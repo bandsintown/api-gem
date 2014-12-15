@@ -1,3 +1,6 @@
+== 0.3.2 2014-12-14
+* Bumped version for bugfix in event.rb
+
 == 0.3.1 2010-07-05
 * Fixed bug for API methods with a blank method name in the route (events - create and artists - create), "/artists/" => "/artists"
 
